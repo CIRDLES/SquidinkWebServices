@@ -52,10 +52,10 @@ public class OpenServlet extends HttpServlet {
         generateSquid3API();
         System.out.println(System.getProperty("user.dir"));
         System.setProperty("user.home", "/usr/local/user_files");
-        generateSquid3API();
         String requestURI[] = request.getRequestURI().split("/");
         String context = requestURI[requestURI.length - 1];
         String curPath = (String) this.getServletConfig().getServletContext().getAttribute("curPath");
+        curPath = "/usr/local/user_files";
         String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
         Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute("squid3API");
         System.out.println(Squid.VERSION);
@@ -65,12 +65,14 @@ public class OpenServlet extends HttpServlet {
         if (isZip[isZip.length - 1].equals("zip")) {
             System.out.println("This Is Zipped");
             response.getWriter().println("zipped");
-                squid.newSquid3GeochronProjectFromZippedPrawnXML(path.toPath());
+            squid.newSquid3GeochronProjectFromZippedPrawnXML(path.toPath());
         }
         else if(isZip[isZip.length - 1].equals("squid")) {
+            response.getWriter().println(path.toString());
             squid.openSquid3Project(path.toPath());
         }
         else {
+            response.getWriter().println(path.toString());
             squid.newSquid3GeochronProjectFromPrawnXML(path.toPath());
         }
         }
