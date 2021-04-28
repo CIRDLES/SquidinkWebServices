@@ -16,7 +16,7 @@ import javax.servlet.annotation.WebServlet;
  * Servlet implementation class FileUploadServlet
  */
 
-@WebServlet(name = "reportsServlet", urlPatterns = { "/reportsServlet/*" })
+@WebServlet(name = "IndividReportServlet", urlPatterns = { "/IndividReportServlet" })
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 *1, // MB
         maxFileSize = 1024 * 1024 * 10, // 10 MB
@@ -24,7 +24,7 @@ import javax.servlet.annotation.WebServlet;
 )
 
 
-public class reportsServlet extends HttpServlet {
+public class IndividReportServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -66,11 +66,27 @@ public class reportsServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-        Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body);
-        squid.generateAllSquid3ProjectReports();
+
+        String[] body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split(":");
+        Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
+        try {
+            if (body[1].equals("RefMat")) {
+                response.getWriter().println(squid.generateReferenceMaterialSummaryExpressionsReport().toString());
+            } else if (body[1].equals("Unknown")) {
+                response.getWriter().println(squid.generateUnknownsSummaryExpressionsReport().toString());
+            } else if (body[1].equals("ProjectAudit")) {
+                response.getWriter().println(squid.generateProjectAuditReport().toString());
+            } else if (body[1].equals("TaskAudit")) {
+                response.getWriter().println(squid.generateTaskSummaryReport().toString());
+            } else if (body[1].equals("PerScan")) {
+                response.getWriter().println(squid.generatePerScanReports().toString());
+            }
+        }
+        catch(IOException e) {
+            response.getWriter().println(e);
+        }
         response.getWriter().println("done");
-         }
+    }
 
     private void generateSquid3API() {
         if(this.getServletConfig().getServletContext().getAttribute("squid3API") == null) {

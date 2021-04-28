@@ -1,20 +1,13 @@
 package com.cirdles;
 
-import java.io.*;
-import java.io.File;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.JAXBException;
-import org.apache.commons.io.IOUtils;
 import org.cirdles.squid.Squid3API;
 import org.cirdles.squid.Squid3Ink;
-import org.cirdles.squid.web.SquidReportingService;
-import org.springframework.web.bind.ServletRequestUtils;
-import org.xml.sax.SAXException;
 import javax.servlet.annotation.WebServlet;
 
 /**

@@ -12,19 +12,10 @@ import org.cirdles.squid.Squid3API;
 import org.cirdles.squid.Squid3Ink;
 import javax.servlet.annotation.WebServlet;
 
-/**
- * Servlet implementation class FileUploadServlet
- */
-
-@WebServlet(name = "reportsServlet", urlPatterns = { "/reportsServlet/*" })
-@MultipartConfig(
-        fileSizeThreshold = 1024 * 1024 *1, // MB
-        maxFileSize = 1024 * 1024 * 10, // 10 MB
-        maxRequestSize = 1024 * 1024 * 100 // 100 MB
-)
 
 
-public class reportsServlet extends HttpServlet {
+
+public class APIServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -67,16 +58,11 @@ public class reportsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-        Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body);
-        squid.generateAllSquid3ProjectReports();
-        response.getWriter().println("done");
-         }
-
-    private void generateSquid3API() {
-        if(this.getServletConfig().getServletContext().getAttribute("squid3API") == null) {
-            this.getServletConfig().getServletContext().setAttribute("squid3API", Squid3Ink.spillSquid3Ink());
+        if(this.getServletConfig().getServletContext().getAttribute(body) == null) {
+            this.getServletConfig().getServletContext().setAttribute(body, Squid3Ink.spillSquid3Ink());
         }
     }
+
     /**
      * Returns a short description of the servlet.
      *

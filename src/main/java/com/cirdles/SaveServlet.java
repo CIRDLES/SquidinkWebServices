@@ -2,7 +2,6 @@ package com.cirdles;
 
 
 import java.io.IOException;
-import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
@@ -10,21 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.cirdles.squid.Squid3API;
 import org.cirdles.squid.Squid3Ink;
+import org.cirdles.squid.exceptions.SquidException;
+
 import javax.servlet.annotation.WebServlet;
 
-/**
- * Servlet implementation class FileUploadServlet
- */
-
-@WebServlet(name = "reportsServlet", urlPatterns = { "/reportsServlet/*" })
-@MultipartConfig(
-        fileSizeThreshold = 1024 * 1024 *1, // MB
-        maxFileSize = 1024 * 1024 * 10, // 10 MB
-        maxRequestSize = 1024 * 1024 * 100 // 100 MB
-)
 
 
-public class reportsServlet extends HttpServlet {
+
+public class SaveServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -66,11 +58,15 @@ public class reportsServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-        Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body);
-        squid.generateAllSquid3ProjectReports();
-        response.getWriter().println("done");
-         }
+        Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute("squid3API");
+        try {
+            squid.saveCurrentSquid3Project();
+        }
+        catch (SquidException e) {
+            response.getWriter().println(e);
+            e.printStackTrace();
+        }
+    }
 
     private void generateSquid3API() {
         if(this.getServletConfig().getServletContext().getAttribute("squid3API") == null) {

@@ -11,12 +11,6 @@
     <welcome-file>uploader.jsp</welcome-file>
   </welcome-file-list>
   <servlet>
-    <description></description>
-    <display-name>SquidServlet</display-name>
-    <servlet-name>SquidServlet</servlet-name>
-    <servlet-class>com.cirdles.SquidServlet</servlet-class>
-  </servlet>
-  <servlet>
   <display-name>DownloadServlet</display-name>
   <servlet-name>DownloadServlet</servlet-name>
   <servlet-class>com.cirdles.DownloadServlet</servlet-class>
@@ -26,6 +20,12 @@
     <display-name>ClickServlet</display-name>
     <servlet-name>ClickServlet</servlet-name>
     <servlet-class>com.cirdles.ClickServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>APIServlet</display-name>
+    <servlet-name>APIServlet</servlet-name>
+    <servlet-class>com.cirdles.APIServlet</servlet-class>
   </servlet>
   <servlet>
     <description></description>
@@ -39,13 +39,21 @@
     <servlet-name>OpenServlet</servlet-name>
     <servlet-class>com.cirdles.OpenServlet</servlet-class>
   </servlet>
+  <servlet>
+    <description></description>
+    <display-name>SaveServlet</display-name>
+    <servlet-name>SaveServlet</servlet-name>
+    <servlet-class>com.cirdles.SaveServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>IndividReportServlet</display-name>
+    <servlet-name>IndividReportServlet</servlet-name>
+    <servlet-class>com.cirdles.IndividReportServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>DownloadServlet</servlet-name>
     <url-pattern>/download/*</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>SquidServlet</servlet-name>
-    <url-pattern>/squidServlet/*</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>ClickServlet</servlet-name>
@@ -58,5 +66,17 @@
   <servlet-mapping>
     <servlet-name>OpenServlet</servlet-name>
     <url-pattern>/OpenServlet/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>APIServlet</servlet-name>
+    <url-pattern>/api</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SaveServlet</servlet-name>
+    <url-pattern>/save/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>IndividReportServlet</servlet-name>
+    <url-pattern>/individ</url-pattern>
   </servlet-mapping>
 </web-app>
