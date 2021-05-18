@@ -11,11 +11,6 @@
     <welcome-file>uploader.jsp</welcome-file>
   </welcome-file-list>
   <servlet>
-  <display-name>DownloadServlet</display-name>
-  <servlet-name>DownloadServlet</servlet-name>
-  <servlet-class>com.cirdles.DownloadServlet</servlet-class>
-  </servlet>
-  <servlet>
     <description></description>
     <display-name>ClickServlet</display-name>
     <servlet-name>ClickServlet</servlet-name>
@@ -51,10 +46,6 @@
     <servlet-name>IndividReportServlet</servlet-name>
     <servlet-class>com.cirdles.IndividReportServlet</servlet-class>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>DownloadServlet</servlet-name>
-    <url-pattern>/download/*</url-pattern>
-  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>ClickServlet</servlet-name>
     <url-pattern>/clickServlet/*</url-pattern>

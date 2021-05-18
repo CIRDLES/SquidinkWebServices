@@ -1,6 +1,7 @@
 package com.cirdles;
 
 import java.io.IOException;
+import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
@@ -64,15 +65,11 @@ public class ClickServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        generateSquid3API();
-        Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute("squid3API");
+        String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+        Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body);
         squid.openDemonstrationSquid3Project();
     }
-    private void generateSquid3API() {
-        if(this.getServletConfig().getServletContext().getAttribute("squid3API") == null) {
-            this.getServletConfig().getServletContext().setAttribute("squid3API", Squid3Ink.spillSquid3Ink());
-            }
-        }
+
     /**
      * Returns a short description of the servlet.
      *

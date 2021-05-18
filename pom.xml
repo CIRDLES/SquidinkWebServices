@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.cirdles</groupId>
   <artifactId>squid_servlet</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>war</packaging>
 
 	<repositories>
@@ -15,6 +15,11 @@
 			<url>https://maven.repository.redhat.com/ga/</url>
 		</repository>
 	</repositories>
+
+	<organization>
+		<name>CIRDLES</name>
+		<url>https://cirdles.org</url>
+	</organization>
 
   <dependencies>
   	<dependency>
