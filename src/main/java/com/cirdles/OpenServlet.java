@@ -47,10 +47,12 @@ public class OpenServlet extends HttpServlet {
 
         String[] body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split(":");
         System.setProperty("user.home",
-                "C:\\Users\\Richard McCarty\\Downloads\\aaaFileBrowser\\filebrowser\\users\\" + body[0]);
+                System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body[0]);
+        //tomcat/filebrowser/users/userfolder
         String curPath =
-                "C:\\Users\\Richard McCarty\\Downloads\\aaaFileBrowser\\filebrowser\\users\\" + body[0];
+                System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body[0];
         Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
+        //tomcat/filebrowser/users/userfolder/selectedfile
         File path = new File(curPath + File.separator + body[1]);
         String[] isZip = path.toString().split("\\.");
         response.getWriter().println(path.toString());

@@ -46,6 +46,13 @@
     <servlet-name>IndividReportServlet</servlet-name>
     <servlet-class>com.cirdles.IndividReportServlet</servlet-class>
   </servlet>
+  <servlet>
+    <description></description>
+    <display-name>ProjectManagementServlet</display-name>
+    <servlet-name>ProjectManagementServlet</servlet-name>
+    <servlet-class>com.cirdles.ProjectManagementServlet</servlet-class>
+  </servlet>
+
   <servlet-mapping>
     <servlet-name>ClickServlet</servlet-name>
     <url-pattern>/clickServlet/*</url-pattern>
@@ -70,4 +77,9 @@
     <servlet-name>IndividReportServlet</servlet-name>
     <url-pattern>/individ</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ProjectManagementServlet</servlet-name>
+    <url-pattern>/pmpull</url-pattern>
+  </servlet-mapping>
+
 </web-app>
