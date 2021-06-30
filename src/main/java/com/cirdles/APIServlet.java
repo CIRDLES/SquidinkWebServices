@@ -60,7 +60,8 @@ public class APIServlet extends HttpServlet {
             throws ServletException, IOException {
         String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
         if(this.getServletConfig().getServletContext().getAttribute(body) == null) {
-            this.getServletConfig().getServletContext().setAttribute(body, Squid3Ink.spillSquid3Ink());
+            String path = System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body;
+            this.getServletConfig().getServletContext().setAttribute(body, Squid3Ink.spillSquid3Ink(path));
         }
     }
 

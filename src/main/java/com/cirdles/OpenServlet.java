@@ -46,9 +46,6 @@ public class OpenServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String[] body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split(":");
-        System.setProperty("user.home",
-                System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body[0]);
-        //tomcat/filebrowser/users/userfolder
         String curPath =
                 System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body[0];
         Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
@@ -70,7 +67,7 @@ public class OpenServlet extends HttpServlet {
             squid.newSquid3GeochronProjectFromPrawnXML(path.toPath());
         }
         }
-        catch(JAXBException | SAXException | SquidException | NullPointerException e) {
+        catch(JAXBException | SAXException | SquidException | NullPointerException | FileNotFoundException e) {
             response.getWriter().println(e);
             e.printStackTrace();
         }
@@ -78,11 +75,6 @@ public class OpenServlet extends HttpServlet {
         response.getWriter().println("End");
     }
 
-    private void generateSquid3API() {
-        if(this.getServletConfig().getServletContext().getAttribute("squid3API") == null) {
-            this.getServletConfig().getServletContext().setAttribute("squid3API", Squid3Ink.spillSquid3Ink());
-        }
-    }
     /**
      * Returns a short description of the servlet.
      *

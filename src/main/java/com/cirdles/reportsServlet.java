@@ -71,12 +71,6 @@ public class reportsServlet extends HttpServlet {
         squid.generateAllSquid3ProjectReports();
         response.getWriter().println("done");
          }
-
-    private void generateSquid3API() {
-        if(this.getServletConfig().getServletContext().getAttribute("squid3API") == null) {
-            this.getServletConfig().getServletContext().setAttribute("squid3API", Squid3Ink.spillSquid3Ink());
-        }
-    }
     /**
      * Returns a short description of the servlet.
      *

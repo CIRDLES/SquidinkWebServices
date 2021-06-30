@@ -67,12 +67,6 @@ public class SaveServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-
-    private void generateSquid3API() {
-        if(this.getServletConfig().getServletContext().getAttribute("squid3API") == null) {
-            this.getServletConfig().getServletContext().setAttribute("squid3API", Squid3Ink.spillSquid3Ink());
-        }
-    }
     /**
      * Returns a short description of the servlet.
      *

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.cirdles.squid.Squid3API;
 import org.cirdles.squid.Squid3Ink;
+import org.cirdles.squid.parameters.parameterModels.ParametersModel;
 import org.cirdles.squid.projects.Squid3ProjectBasicAPI;
 
 import javax.servlet.annotation.WebServlet;
@@ -69,9 +70,8 @@ public class ProjectManagementServlet extends HttpServlet {
             throws ServletException, IOException {
         String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
         Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body);
-        Squid3ProjectBasicAPI infoPull =  squid.getSquid3Project();
+        Squid3ProjectBasicAPI infoPull = squid.getSquid3Project();
         String out = "";
-        
         out += infoPull.getProjectName() + "~!@";
         out += infoPull.getAnalystName() + "~!@";
         //Missing Routes (Do we even want to include them? Maybe trim?
@@ -87,6 +87,13 @@ public class ProjectManagementServlet extends HttpServlet {
         out += infoPull.getProjectNotes() + "~!@";
         out += infoPull.getPrawnFileShrimpSoftwareVersionName() + "~!@";
         out += infoPull.getPrawnSourceFilePath() + "~!@";
+        for( ParametersModel model: Squid3Ink.getSquidLabData().getCommonPbModels()) {
+            out+= model.getModelName() + "*&^";
+        }
+        out += "~!@";
+        for( ParametersModel model : Squid3Ink.getSquidLabData().getPhysicalConstantsModels()) {
+            out+= model.getModelName() + "*&^";
+        }
         response.getWriter().println(out);
 
     }
