@@ -50,10 +50,10 @@ public class OpenServlet extends HttpServlet {
                 System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body[0];
         Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
         //tomcat/filebrowser/users/userfolder/selectedfile
-        File path = new File(curPath + File.separator + body[1]);
-        String[] isZip = path.toString().split("\\.");
-        response.getWriter().println(path.toString());
         try {
+            File path = new File(curPath + File.separator + body[1]);
+            String[] isZip = path.toString().split("\\.");
+            response.getWriter().println(path.toString());
         if (isZip[isZip.length - 1].equals("zip")) {
             response.getWriter().println("zipped");
             squid.newSquid3GeochronProjectFromZippedPrawnXML(path.toPath());
