@@ -51,7 +51,7 @@ public class OpenServlet extends HttpServlet {
         Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
         //tomcat/filebrowser/users/userfolder/selectedfile
         try {
-            File path = new File(curPath + File.separator + body[1]);
+            File path = new File(curPath + File.separator + body[1] + File.separator);
             String[] isZip = path.toString().split("\\.");
             response.getWriter().println(path.toString());
         if (isZip[isZip.length - 1].equals("zip")) {
