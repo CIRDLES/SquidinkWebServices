@@ -67,7 +67,7 @@ public class OpenServlet extends HttpServlet {
             squid.newSquid3GeochronProjectFromPrawnXML(path.toPath());
         }
         }
-        catch(JAXBException | SAXException | SquidException | NullPointerException | FileNotFoundException e) {
+        catch(Exception e) {
             response.getWriter().println(e);
             e.printStackTrace();
         }
