@@ -52,7 +52,12 @@
     <servlet-name>ProjectManagementServlet</servlet-name>
     <servlet-class>com.cirdles.ProjectManagementServlet</servlet-class>
   </servlet>
-
+  <servlet>
+    <description></description>
+    <display-name>PmSetServlet</display-name>
+    <servlet-name>PmSetServlet</servlet-name>
+    <servlet-class>com.cirdles.PmSetServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>ClickServlet</servlet-name>
     <url-pattern>/clickServlet/*</url-pattern>
@@ -80,6 +85,10 @@
   <servlet-mapping>
     <servlet-name>ProjectManagementServlet</servlet-name>
     <url-pattern>/pmpull</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PmSetServlet</servlet-name>
+    <url-pattern>/pmset</url-pattern>
   </servlet-mapping>
 
 </web-app>

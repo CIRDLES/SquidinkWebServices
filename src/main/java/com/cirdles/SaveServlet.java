@@ -2,6 +2,7 @@ package com.cirdles;
 
 
 import java.io.IOException;
+import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
@@ -58,7 +59,8 @@ public class SaveServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute("squid3API");
+        String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+        Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body);
         try {
             squid.saveCurrentSquid3Project();
         }
