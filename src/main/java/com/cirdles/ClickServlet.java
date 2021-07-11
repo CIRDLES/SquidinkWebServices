@@ -1,6 +1,10 @@
 package com.cirdles;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -9,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.cirdles.squid.Squid3API;
 import org.cirdles.squid.Squid3Ink;
+import static org.cirdles.squid.constants.Squid3Constants.DEMO_SQUID_PROJECTS_FOLDER;
 import javax.servlet.annotation.WebServlet;
 
 /**
@@ -67,7 +72,20 @@ public class ClickServlet extends HttpServlet {
             throws ServletException, IOException {
         String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
         Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body);
-        squid.openDemonstrationSquid3Project();
+            File localDemoFile = new File(DEMO_SQUID_PROJECTS_FOLDER.getAbsolutePath()
+                    + File.separator + "SQUID3_demo_file.squid");
+            Path basepath = localDemoFile.toPath();
+            Path target = new File(
+                    System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users"
+                            + File.separator + body + File.separator + "SQUID3_demo_file.squid").toPath();
+            response.getWriter().println(basepath.toString());
+            response.getWriter().println(target.toString());
+            Files.copy(basepath, target, StandardCopyOption.REPLACE_EXISTING);
+            squid.openSquid3Project(target);
+
+        //catch(Exception e) {
+        //    response.getWriter().println(e);
+        //}
     }
 
     /**
