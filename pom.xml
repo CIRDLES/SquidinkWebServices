@@ -39,9 +39,9 @@
 		  <version>4.0.1</version>
 	  </dependency>
 	  <dependency>
-		  <groupId>com.github.Cirdles</groupId>
-		  <artifactId>squid</artifactId>
-		  <version>master-SNAPSHOT</version>
+		  <groupId>com.github.cirdles.squid</groupId>
+		  <artifactId>squidAPI</artifactId>
+		  <version>-SNAPSHOT</version>
 	  </dependency>
   </dependencies>
   
