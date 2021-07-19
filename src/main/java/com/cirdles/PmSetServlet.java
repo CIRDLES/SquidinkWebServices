@@ -135,6 +135,9 @@ public class PmSetServlet extends HttpServlet {
             case "refreshModel":
                 squid.refreshModelsAction();
                 break;
+            case "projectName":
+                squid.getSquid3Project().setProjectName(body[2]);
+                break;
         }
 
     }
