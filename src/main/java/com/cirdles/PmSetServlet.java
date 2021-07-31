@@ -136,8 +136,19 @@ public class PmSetServlet extends HttpServlet {
                 squid.refreshModelsAction();
                 break;
             case "projectName":
-                squid.getSquid3Project().setProjectName(body[2]);
+                if(!body[2].isEmpty()) {
+                    squid.getSquid3Project().setProjectName(body[2]);
+                }
                 break;
+            case "analystName":
+                if(!body[2].isEmpty()) {
+                    Squid3Ink.getSquidPersistentState().getTaskDesign().setAnalystName(body[2]);
+                }
+                break;
+            case "notes":
+                squid.getSquid3Project().setProjectNotes(body[2]);
+                break;
+
         }
 
     }

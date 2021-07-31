@@ -1,7 +1,11 @@
 package com.cirdles;
 
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -59,10 +63,18 @@ public class SaveServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-        Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body);
+        String[] body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split(":");
+        String curPath =
+                System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body[0];
+        Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
         try {
             squid.saveCurrentSquid3Project();
+            Path source = Paths.get(curPath + File.separator + body[1] + File.separator);
+            String siblingPath = (curPath + File.separator + body[1]);
+            int index = siblingPath.lastIndexOf("/");
+            if(index>=0)
+                siblingPath = siblingPath.substring(0, index);
+            Files.move(source, source.resolveSibling(siblingPath + File.separator + squid.getSquid3Project().getProjectName()));
         }
         catch (SquidException e) {
             response.getWriter().println(e);
