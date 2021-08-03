@@ -63,7 +63,7 @@ public class OpenServlet extends HttpServlet {
             response.getWriter().println(path.toString());
             squid.openSquid3Project(path.toPath());
         }
-        else {
+        else if(isZip[isZip.length - 1].equals(".xml")){
             response.getWriter().println(path.toString());
             squid.newSquid3GeochronProjectFromPrawnXML(path.toPath());
         }

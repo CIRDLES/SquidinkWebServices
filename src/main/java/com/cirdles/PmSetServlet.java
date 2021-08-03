@@ -142,7 +142,7 @@ public class PmSetServlet extends HttpServlet {
                 break;
             case "analystName":
                 if(!body[2].isEmpty()) {
-                    Squid3Ink.getSquidPersistentState().getTaskDesign().setAnalystName(body[2]);
+                    squid.getSquid3Project().setAnalystName(body[2]);
                 }
                 break;
             case "notes":
