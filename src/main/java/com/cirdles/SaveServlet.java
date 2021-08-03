@@ -74,9 +74,9 @@ public class SaveServlet extends HttpServlet {
             int index = siblingPath.lastIndexOf("/");
             if(index>=0)
                 siblingPath = siblingPath.substring(0, index);
-            Files.move(source, source.resolveSibling(siblingPath + File.separator + squid.getSquid3Project().getProjectName()));
+            Files.move(source, source.resolveSibling(siblingPath + File.separator + squid.getSquid3Project().getProjectName() + ".squid"));
         }
-        catch (SquidException e) {
+        catch (Exception e) {
             response.getWriter().println(e);
             e.printStackTrace();
         }
