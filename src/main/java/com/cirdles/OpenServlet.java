@@ -54,26 +54,20 @@ public class OpenServlet extends HttpServlet {
         try {
             File path = new File(curPath + File.separator + body[1] + File.separator);
             String[] isZip = path.toString().split("\\.");
-            response.getWriter().println(path.toString());
         if (isZip[isZip.length - 1].equals("zip")) {
-            response.getWriter().println("zipped");
             squid.newSquid3GeochronProjectFromZippedPrawnXML(path.toPath());
         }
         else if(isZip[isZip.length - 1].equals("squid")) {
-            response.getWriter().println(path.toString());
             squid.openSquid3Project(path.toPath());
         }
         else if(isZip[isZip.length - 1].equals(".xml")){
-            response.getWriter().println(path.toString());
             squid.newSquid3GeochronProjectFromPrawnXML(path.toPath());
         }
         }
         catch(Exception e) {
-            response.getWriter().println(e);
             e.printStackTrace();
         }
         this.getServletConfig().getServletContext().setAttribute("squid3API", squid);
-        response.getWriter().println("End");
     }
 
     /**
