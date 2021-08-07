@@ -65,6 +65,7 @@ public class PmSetServlet extends HttpServlet {
             throws ServletException, IOException {
         String[] body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split(":");
         Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
+        try {
         switch(body[1]) {
             case "SBM":
                 if(body[2].equals("true"))
@@ -148,7 +149,10 @@ public class PmSetServlet extends HttpServlet {
             case "notes":
                 squid.getSquid3Project().setProjectNotes(body[2]);
                 break;
-
+        }
+        }
+        catch(Exception e) {
+            response.getWriter().println(e);
         }
 
     }
