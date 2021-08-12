@@ -58,6 +58,12 @@
     <servlet-name>PmSetServlet</servlet-name>
     <servlet-class>com.cirdles.PmSetServlet</servlet-class>
   </servlet>
+  <servlet>
+    <description></description>
+    <display-name>SpotsPullServlet</display-name>
+    <servlet-name>SpotsPullServlet</servlet-name>
+    <servlet-class>com.cirdles.SpotsPullServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>ClickServlet</servlet-name>
     <url-pattern>/clickServlet/*</url-pattern>
@@ -89,6 +95,10 @@
   <servlet-mapping>
     <servlet-name>PmSetServlet</servlet-name>
     <url-pattern>/pmset</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SpotsPullServlet</servlet-name>
+    <url-pattern>/spotspull</url-pattern>
   </servlet-mapping>
 
 </web-app>
