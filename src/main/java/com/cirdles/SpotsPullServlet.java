@@ -80,7 +80,7 @@ public class SpotsPullServlet extends HttpServlet {
         Gson gson = new Gson();
         response.getWriter().println(gson.toJson(squid.getArrayOfSampleNames()));
         response.getWriter().println(gson.toJson(squid.getArrayOfSpotSummariesFromSample("ALL SAMPLES")));
-        response.getWriter().write(gson.toJson(squid.getConcReferenceMaterialSampleName(), squid.getConcReferenceMaterialSampleName().getClass()));
+        response.getWriter().write(gson.toJson(squid.getReferenceMaterialSampleName(), squid.getConcReferenceMaterialSampleName().getClass()));
         response.getWriter().write(gson.toJson(squid.getConcReferenceMaterialSampleName(), squid.getConcReferenceMaterialSampleName().getClass()));
 
     }
