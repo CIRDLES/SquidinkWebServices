@@ -22,7 +22,7 @@ import javax.servlet.annotation.WebServlet;
  * Servlet implementation class FileUploadServlet
  */
 
-@WebServlet(name = "SpotsPullServlet", urlPatterns = { "/spotspull" })
+@WebServlet(name = "SpotsUpdateServlet", urlPatterns = { "/spotsupdate" })
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 *1, // MB
         maxFileSize = 1024 * 1024 * 10, // 10 MB
@@ -30,7 +30,7 @@ import javax.servlet.annotation.WebServlet;
 )
 
 
-public class SpotsPullServlet extends HttpServlet {
+public class SpotsUpdateServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -74,15 +74,11 @@ public class SpotsPullServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-        Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body);
+        String[] body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split("!@#");
+        Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
+        Squid3ProjectBasicAPI infoPull = squid.getSquid3Project();
         Gson gson = new Gson();
-        response.getWriter().println(gson.toJson(squid.getArrayOfSampleNames()));
-        response.getWriter().println(gson.toJson(squid.getArrayOfSpotSummariesFromSample("ALL SAMPLES")));
-        response.getWriter().println(gson.toJson(squid.getArrayOfSpotSummariesFromSample(squid.getReferenceMaterialSampleName())));
-        response.getWriter().println(gson.toJson(squid.getArrayOfSpotSummariesFromSample(squid.getConcReferenceMaterialSampleName())));
-        response.getWriter().println(gson.toJson(squid.getReferenceMaterialSampleName()));
-        response.getWriter().println(gson.toJson(squid.getConcReferenceMaterialSampleName()));
+        response.getWriter().println(gson.toJson(squid.getArrayOfSpotSummariesFromSample(body[1])));
 
     }
 
