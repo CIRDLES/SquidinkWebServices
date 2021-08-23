@@ -70,6 +70,24 @@
     <servlet-name>SpotsUpdateServlet</servlet-name>
     <servlet-class>com.cirdles.SpotsUpdateServlet</servlet-class>
   </servlet>
+  <servlet>
+    <description></description>
+    <display-name>SpotsRmTablesServlet</display-name>
+    <servlet-name>SpotsRmTablesServlet</servlet-name>
+    <servlet-class>com.cirdles.SpotsRmTablesServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>SpotsModelServlet</display-name>
+    <servlet-name>SpotsModelServlet</servlet-name>
+    <servlet-class>com.cirdles.SpotsModelServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>SpotsModelDataServlet</display-name>
+    <servlet-name>SpotsModelDataServlet</servlet-name>
+    <servlet-class>com.cirdles.SpotsModelDataServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>ClickServlet</servlet-name>
     <url-pattern>/clickServlet/*</url-pattern>
@@ -110,5 +128,16 @@
     <servlet-name>SpotsUpdateServlet</servlet-name>
     <url-pattern>/spotsupdate</url-pattern>
   </servlet-mapping>
-
+  <servlet-mapping>
+    <servlet-name>SpotsRmTablesServlet</servlet-name>
+    <url-pattern>/spotstables</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SpotsModelServlet</servlet-name>
+    <url-pattern>/spotsmodels</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SpotsModelDataServlet</servlet-name>
+    <url-pattern>/spotsdata</url-pattern>
+  </servlet-mapping>
 </web-app>

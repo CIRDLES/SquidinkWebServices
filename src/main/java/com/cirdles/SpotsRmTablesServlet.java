@@ -22,7 +22,7 @@ import javax.servlet.annotation.WebServlet;
  * Servlet implementation class FileUploadServlet
  */
 
-@WebServlet(name = "SpotsPullServlet", urlPatterns = { "/spotspull" })
+@WebServlet(name = "SpotsRmTablesServlet", urlPatterns = { "/spotstables" })
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 *1, // MB
         maxFileSize = 1024 * 1024 * 10, // 10 MB
@@ -30,7 +30,7 @@ import javax.servlet.annotation.WebServlet;
 )
 
 
-public class SpotsPullServlet extends HttpServlet {
+public class SpotsRmTablesServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -73,30 +73,16 @@ public class SpotsPullServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json");
-        response.setHeader("Access-Control-Allow-Origin", "*");
         response.setCharacterEncoding("UTF-8");
-        String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-        Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body);
-        Gson gson = new Gson();
-        response.getWriter().println(gson.toJson(squid.getArrayOfSampleNames()));
-        response.getWriter().println(gson.toJson(squid.getArrayOfSpotSummariesFromSample("ALL SAMPLES")));
-        response.getWriter().println(gson.toJson(squid.getArrayOfSpotSummariesFromSample(squid.getReferenceMaterialSampleName())));
-        response.getWriter().println(gson.toJson(squid.getArrayOfSpotSummariesFromSample(squid.getConcReferenceMaterialSampleName())));
-        response.getWriter().println(gson.toJson(squid.getReferenceMaterialSampleName()));
-        response.getWriter().println(gson.toJson(squid.getConcReferenceMaterialSampleName()));
-        String out = "";
-        for( ParametersModel model: Squid3Ink.getSquidLabData().getReferenceMaterials()) {
-            out+= model.getModelName() + "!@#";
+        String body[] = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split("!@#");
+        Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
+        if(body[1].equals("RM")) {
+            squid.setReferenceMaterialSampleName(body[2]);
         }
-        response.getWriter().println(out.substring(0,out.length() - 3));
-        out = "";
-        for( ParametersModel model: Squid3Ink.getSquidLabData().getReferenceMaterialsWithNonZeroConcentrations()) {
-            out+= model.getModelName() + "!@#";
+        else {
+            squid.setConcReferenceMaterialSampleName(body[2]);
         }
-        response.getWriter().println(out.substring(0,out.length() - 3));
-        response.getWriter().println(gson.toJson(Squid3Ink.getSquidLabData().getRefMatDefault().getModelName()));
-        response.getWriter().println(gson.toJson(Squid3Ink.getSquidLabData().getRefMatConcDefault().getModelName()));
-
+        response.getWriter().println("Updated " + body[1] + " Sample Name");
     }
 
     /**
