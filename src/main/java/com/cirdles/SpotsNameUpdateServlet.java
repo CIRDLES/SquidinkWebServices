@@ -22,7 +22,7 @@ import javax.servlet.annotation.WebServlet;
  * Servlet implementation class FileUploadServlet
  */
 
-@WebServlet(name = "SpotsRmTablesServlet", urlPatterns = { "/spotstables" })
+@WebServlet(name = "SpotsNameUpdateServlet", urlPatterns = { "/spotsname" })
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 *1, // MB
         maxFileSize = 1024 * 1024 * 10, // 10 MB
@@ -30,7 +30,7 @@ import javax.servlet.annotation.WebServlet;
 )
 
 
-public class SpotsRmTablesServlet extends HttpServlet {
+public class SpotsNameUpdateServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -76,21 +76,10 @@ public class SpotsRmTablesServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         String body[] = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split("!@#");
         Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
-        String clear = "";
-        if(body[1].equals("RM")) {
-            if(body[2].equals("clear")) {
-                squid.setReferenceMaterialSampleName(clear);
-
-            }
-            squid.setReferenceMaterialSampleName(body[2]);
-        }
-        else {
-            if(body[2].equals("clear")) {
-                squid.setConcReferenceMaterialSampleName(clear);
-            }
-            squid.setConcReferenceMaterialSampleName(body[2]);
-        }
-        response.getWriter().println("Replaced " + body[1] + " Sample Name with " + body[2]);
+        String oldName = body[1].trim();
+        String newName = body[2].trim();
+        squid.updateSpotName(oldName, newName);
+        response.getWriter().println("Changed spot: " + oldName + " to: " + newName);
     }
 
     /**

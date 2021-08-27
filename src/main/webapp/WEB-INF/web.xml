@@ -88,6 +88,12 @@
     <servlet-name>SpotsModelDataServlet</servlet-name>
     <servlet-class>com.cirdles.SpotsModelDataServlet</servlet-class>
   </servlet>
+  <servlet>
+    <description></description>
+    <display-name>SpotsNameUpdateServlet</display-name>
+    <servlet-name>SpotsNameUpdateServlet</servlet-name>
+    <servlet-class>com.cirdles.SpotsNameUpdateServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>ClickServlet</servlet-name>
     <url-pattern>/clickServlet/*</url-pattern>
@@ -139,5 +145,9 @@
   <servlet-mapping>
     <servlet-name>SpotsModelDataServlet</servlet-name>
     <url-pattern>/spotsdata</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SpotsNameUpdateServlet</servlet-name>
+    <url-pattern>/spotsname</url-pattern>
   </servlet-mapping>
 </web-app>
