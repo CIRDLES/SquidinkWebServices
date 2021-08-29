@@ -1,4 +1,8 @@
 package com.cirdles;
+//export MSYS_NO_PATHCONV=1
+//        export PATH=${PWD}/../bin:$PATH
+//        export FABRIC_CFG_PATH=${PWD}/configtx
+//        export VERBOSE=false
 
 import java.io.IOException;
 import java.util.stream.Collectors;
