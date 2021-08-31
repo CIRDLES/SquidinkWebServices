@@ -86,16 +86,16 @@ public class SpotsPullServlet extends HttpServlet {
         response.getWriter().println(gson.toJson(squid.getConcReferenceMaterialSampleName()));
         String out = "";
         for( ParametersModel model: Squid3Ink.getSquidLabData().getReferenceMaterials()) {
-            out+= model.getModelName() + "!@#";
+            out+= model.getModelNameWithVersion() + "!@#";
         }
         response.getWriter().println(out.substring(0,out.length() - 3));
         out = "";
         for( ParametersModel model: Squid3Ink.getSquidLabData().getReferenceMaterialsWithNonZeroConcentrations()) {
-            out+= model.getModelName() + "!@#";
+            out+= model.getModelNameWithVersion() + "!@#";
         }
         response.getWriter().println(out.substring(0,out.length() - 3));
-        response.getWriter().println(gson.toJson(Squid3Ink.getSquidLabData().getRefMatDefault().getModelName()));
-        response.getWriter().println(gson.toJson(Squid3Ink.getSquidLabData().getRefMatConcDefault().getModelName()));
+        response.getWriter().println(gson.toJson(Squid3Ink.getSquidLabData().getRefMatDefault().getModelNameWithVersion()));
+        response.getWriter().println(gson.toJson(Squid3Ink.getSquidLabData().getRefMatConcDefault().getModelNameWithVersion()));
 
     }
 

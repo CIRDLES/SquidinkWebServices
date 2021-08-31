@@ -81,7 +81,7 @@ public class SpotsModelDataServlet extends HttpServlet {
         Gson gson = new Gson();
         //Find corresponding RM ParametersModel Object
             for( ParametersModel model: Squid3Ink.getSquidLabData().getReferenceMaterials()) {
-                if (model.getModelName().equals(body[1])) {
+                if (model.getModelNameWithVersion().equals(body[1])) {
                     ReferenceMaterialModel curModel = (ReferenceMaterialModel)model;
                     response.getWriter().println(gson.toJson(squid.produceAuditOfRefMatModel(curModel)));
                     response.getWriter().println(gson.toJson(squid.get206_238DateMa(curModel)));
@@ -91,7 +91,7 @@ public class SpotsModelDataServlet extends HttpServlet {
                 }
             }
             for( ParametersModel model: Squid3Ink.getSquidLabData().getReferenceMaterialsWithNonZeroConcentrations()) {
-                if(model.getModelName().equals(body[2])) {
+                if(model.getModelNameWithVersion().equals(body[2])) {
                     ReferenceMaterialModel curModel = (ReferenceMaterialModel)model;
                     response.getWriter().println(gson.toJson(squid.getU_ppm(curModel)));
                     response.getWriter().println(gson.toJson(squid.getTh_ppm(curModel)));
