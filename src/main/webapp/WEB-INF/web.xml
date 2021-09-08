@@ -125,6 +125,24 @@
     <servlet-name>CloseServlet</servlet-name>
     <servlet-class>com.cirdles.CloseServlet</servlet-class>
   </servlet>
+  <servlet>
+    <description></description>
+    <display-name>SaveAsServlet</display-name>
+    <servlet-name>SaveAsServlet</servlet-name>
+    <servlet-class>com.cirdles.SaveAsServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>SpotRemovalServlet</display-name>
+    <servlet-name>SpotRemovalServlet</servlet-name>
+    <servlet-class>com.cirdles.SpotRemovalServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>SpotRestoreServlet</display-name>
+    <servlet-name>SpotRestoreServlet</servlet-name>
+    <servlet-class>com.cirdles.SpotRestoreServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>ClickServlet</servlet-name>
     <url-pattern>/clickServlet/*</url-pattern>
@@ -184,5 +202,17 @@
   <servlet-mapping>
     <servlet-name>CloseServlet</servlet-name>
     <url-pattern>/close</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SaveAsServlet</servlet-name>
+    <url-pattern>/saveAsServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SpotRemovalServlet</servlet-name>
+    <url-pattern>/removespot</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SpotRestoreServlet</servlet-name>
+    <url-pattern>/restorespot</url-pattern>
   </servlet-mapping>
 </web-app>

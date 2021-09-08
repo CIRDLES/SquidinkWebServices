@@ -1,36 +1,29 @@
 package com.cirdles;
 
+
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import org.cirdles.squid.Squid3API;
 import org.cirdles.squid.Squid3Ink;
-import org.cirdles.squid.parameters.parameterModels.ParametersModel;
-import org.cirdles.squid.projects.Squid3ProjectBasicAPI;
+import org.cirdles.squid.exceptions.SquidException;
 
 import javax.servlet.annotation.WebServlet;
 
-/**
- * Servlet implementation class FileUploadServlet
- */
-
-@WebServlet(name = "SpotsPullServlet", urlPatterns = { "/spotspull" })
-@MultipartConfig(
-        fileSizeThreshold = 1024 * 1024 *1, // MB
-        maxFileSize = 1024 * 1024 * 10, // 10 MB
-        maxRequestSize = 1024 * 1024 * 100 // 100 MB
-)
 
 
-public class SpotsPullServlet extends HttpServlet {
+
+public class SpotRestoreServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -72,41 +65,16 @@ public class SpotsPullServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-
-
-        response.setContentType("application/json");
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setCharacterEncoding("UTF-8");
         String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
         Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body);
-        Gson gson = new Gson();
-        response.getWriter().println(gson.toJson(squid.getArrayOfSampleNames()));
-        response.getWriter().println(gson.toJson(squid.getArrayOfSpotSummariesFromSample("ALL SAMPLES")));
-        response.getWriter().println(gson.toJson(squid.getArrayOfSpotSummariesFromSample(squid.getReferenceMaterialSampleName())));
-        response.getWriter().println(gson.toJson(squid.getArrayOfSpotSummariesFromSample(squid.getConcReferenceMaterialSampleName())));
-        response.getWriter().println(gson.toJson(squid.getReferenceMaterialSampleName()));
-        response.getWriter().println(gson.toJson(squid.getConcReferenceMaterialSampleName()));
-        String out = "";
-        for( ParametersModel model: Squid3Ink.getSquidLabData().getReferenceMaterials()) {
-            out+= model.getModelNameWithVersion() + "!@#";
+        try {
+            squid.restoreAllSpotsToDataFile();
         }
-        response.getWriter().println(out.substring(0,out.length() - 3));
-        out = "";
-        for( ParametersModel model: Squid3Ink.getSquidLabData().getReferenceMaterialsWithNonZeroConcentrations()) {
-            out+= model.getModelNameWithVersion() + "!@#";
-        }
-        response.getWriter().println(out.substring(0,out.length() - 3));
-        response.getWriter().println(gson.toJson(squid.getSquid3Project().getReferenceMaterialModel().getModelNameWithVersion()));
-        response.getWriter().println(gson.toJson(squid.getSquid3Project().getConcentrationReferenceMaterialModel().getModelNameWithVersion()));
-        response.getWriter().println(gson.toJson(squid.getRemovedSpotsByName().isEmpty()));
-        }
-        catch(Exception e) {
+        catch (Exception e) {
             response.getWriter().println(e);
             e.printStackTrace();
         }
     }
-
     /**
      * Returns a short description of the servlet.
      *
@@ -114,6 +82,6 @@ public class SpotsPullServlet extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Click Event Servlet";
+        return "reportsServlet Servlet";
     }// </editor-fold>
 }

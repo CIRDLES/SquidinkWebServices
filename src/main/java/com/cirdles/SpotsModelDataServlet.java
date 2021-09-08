@@ -95,9 +95,10 @@ public class SpotsModelDataServlet extends HttpServlet {
                     ReferenceMaterialModel curModel = (ReferenceMaterialModel)model;
                     response.getWriter().println(gson.toJson(squid.getU_ppm(curModel)));
                     response.getWriter().println(gson.toJson(squid.getTh_ppm(curModel)));
-
                 }
             }
+            response.getWriter().println(gson.toJson(squid.getSquid3Project().getReferenceMaterialModel().getModelNameWithVersion()));
+        response.getWriter().println(gson.toJson(squid.getSquid3Project().getConcentrationReferenceMaterialModel().getModelNameWithVersion()));
     }
 
     /**

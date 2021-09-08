@@ -1,36 +1,27 @@
 package com.cirdles;
 
+
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import org.cirdles.squid.Squid3API;
 import org.cirdles.squid.Squid3Ink;
-import org.cirdles.squid.parameters.parameterModels.ParametersModel;
-import org.cirdles.squid.projects.Squid3ProjectBasicAPI;
+import org.cirdles.squid.exceptions.SquidException;
 
 import javax.servlet.annotation.WebServlet;
 
-/**
- * Servlet implementation class FileUploadServlet
- */
-
-@WebServlet(name = "SpotsRmTablesServlet", urlPatterns = { "/spotstables" })
-@MultipartConfig(
-        fileSizeThreshold = 1024 * 1024 *1, // MB
-        maxFileSize = 1024 * 1024 * 10, // 10 MB
-        maxRequestSize = 1024 * 1024 * 100 // 100 MB
-)
 
 
-public class SpotsRmTablesServlet extends HttpServlet {
+
+public class SaveAsServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -72,42 +63,19 @@ public class SpotsRmTablesServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        String body[] = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split("!@#");
+        String[] body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split(":");
+        String curPath =
+                System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body[0] + File.separator + body[1];
         Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
-        String clear = "";
-        if(body[1].equals("RM")) {
-            if(body[2].equals("clear")) {
-                squid.setReferenceMaterialSampleName(clear);
-                for(ParametersModel model : Squid3Ink.getSquidLabData().getReferenceMaterials()) {
-                    if(model.getModelName() == "NONE") {
-                        squid.updateRefMatModelChoice(model);
-                    }
-                }
-
-            }
-            else {
-                squid.setReferenceMaterialSampleName(body[2]);
-            }
-
+        try {
+            File newSquidFile = new File(curPath);
+            squid.saveAsSquid3Project(newSquidFile);
         }
-        else {
-            if(body[2].equals("clear")) {
-                squid.setConcReferenceMaterialSampleName(clear);
-                for(ParametersModel model : Squid3Ink.getSquidLabData().getReferenceMaterials()) {
-                    if(model.getModelName() == "NONE") {
-                        squid.updateConcRefMatModelChoice(model);
-                    }
-                }
-            }
-            else {
-                squid.setConcReferenceMaterialSampleName(body[2]);
-            }
+        catch (Exception e) {
+            response.getWriter().println(e);
+            e.printStackTrace();
         }
-        response.getWriter().println("Replaced " + body[1] + " Sample Name with " + body[2]);
     }
-
     /**
      * Returns a short description of the servlet.
      *
@@ -115,6 +83,6 @@ public class SpotsRmTablesServlet extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Click Event Servlet";
+        return "reportsServlet Servlet";
     }// </editor-fold>
 }
