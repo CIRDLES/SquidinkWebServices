@@ -106,7 +106,7 @@ public class PmSetServlet extends HttpServlet {
                 ParametersModel model = null;
                 while(list.hasNext() == true) {
                     model = list.next();
-                    if(model.getModelName().equals(body[2])) {
+                    if(model.getModelNameWithVersion().equals(body[2])) {
                         squid.setDefaultCommonPbModel(model);
                         flag = true;
                         break;
@@ -121,7 +121,7 @@ public class PmSetServlet extends HttpServlet {
                 ParametersModel model1 = null;
                 while(list1.hasNext() == true) {
                     model1 = list1.next();
-                    if(model1.getModelName().equals(body[2])) {
+                    if(model1.getModelNameWithVersion().equals(body[2])) {
                         squid.setDefaultPhysicalConstantsModel(model1);
                         flag1 = true;
                         break;

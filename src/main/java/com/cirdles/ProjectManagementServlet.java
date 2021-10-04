@@ -81,18 +81,19 @@ public class ProjectManagementServlet extends HttpServlet {
         out += infoPull.isSquidAllowsAutoExclusionOfSpots() + "~!@";
         out += infoPull.getExtPErrU() + "~!@";
         out += infoPull.getExtPErrTh() + "~!@";
-        out += infoPull.getCommonPbModel().getModelName() + "~!@";
-        out += infoPull.getPhysicalConstantsModel().getModelName() + "~!@";
+        out += infoPull.getCommonPbModel().getModelNameWithVersion() + "~!@";
+        out += infoPull.getPhysicalConstantsModel().getModelNameWithVersion() + "~!@";
         out += infoPull.getSessionDurationHours() + "~!@";
         out += infoPull.getProjectNotes() + "~!@";
         out += infoPull.getPrawnFileShrimpSoftwareVersionName() + "~!@";
         out += infoPull.getPrawnSourceFilePath() + "~!@";
+        out += infoPull.generatePrefixTreeFromSpotNames().buildSummaryDataString() + "~!@";
         for( ParametersModel model: Squid3Ink.getSquidLabData().getCommonPbModels()) {
-            out+= model.getModelName() + "*&^";
+            out+= model.getModelNameWithVersion() + "*&^";
         }
         out += "~!@";
         for( ParametersModel model : Squid3Ink.getSquidLabData().getPhysicalConstantsModels()) {
-            out+= model.getModelName() + "*&^";
+            out+= model.getModelNameWithVersion() + "*&^";
         }
         response.getWriter().println(out);
 

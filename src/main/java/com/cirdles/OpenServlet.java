@@ -48,6 +48,8 @@ public class OpenServlet extends HttpServlet {
         String[] body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split(":");
         String curPath =
                 System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body[0];
+        String pathToDir = System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body[0];
+        this.getServletConfig().getServletContext().setAttribute(body[0], Squid3Ink.spillSquid3Ink(pathToDir));
         Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
 
         //tomcat/filebrowser/users/userfolder/selectedfile
