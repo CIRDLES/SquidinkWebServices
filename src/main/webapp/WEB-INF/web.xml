@@ -143,6 +143,12 @@
     <servlet-name>SpotRestoreServlet</servlet-name>
     <servlet-class>com.cirdles.SpotRestoreServlet</servlet-class>
   </servlet>
+  <servlet>
+    <description></description>
+    <display-name>SaveAsPreflight</display-name>
+    <servlet-name>SaveAsPreflight</servlet-name>
+    <servlet-class>com.cirdles.SaveAsPreflight</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>ClickServlet</servlet-name>
     <url-pattern>/clickServlet/*</url-pattern>
@@ -214,5 +220,9 @@
   <servlet-mapping>
     <servlet-name>SpotRestoreServlet</servlet-name>
     <url-pattern>/restorespot</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SaveAsPreflight</servlet-name>
+    <url-pattern>/sapreflight</url-pattern>
   </servlet-mapping>
 </web-app>
