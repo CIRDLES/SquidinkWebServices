@@ -4,6 +4,7 @@ import java.io.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -57,13 +58,14 @@ public class OpenServlet extends HttpServlet {
         try {
             File path = new File(curPath + File.separator + body[1] + File.separator);
             String[] isZip = path.toString().split("\\.");
+            System.out.println(Arrays.toString(isZip));
         if (isZip[isZip.length - 1].equals("zip")) {
             squid.newSquid3GeochronProjectFromZippedPrawnXML(path.toPath());
         }
         else if(isZip[isZip.length - 1].equals("squid")) {
             squid.openSquid3Project(path.toPath());
         }
-        else if(isZip[isZip.length - 1].equals(".xml")){
+        else if(isZip[isZip.length - 1].equals("xml")){
             squid.newSquid3GeochronProjectFromPrawnXML(path.toPath());
         }
         }
