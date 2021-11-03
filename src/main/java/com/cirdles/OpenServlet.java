@@ -46,8 +46,6 @@ public class OpenServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
         String[] body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split(":");
-        String curPath =
-                System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body[0];
         String pathToDir = System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body[0];
         response.getWriter().println(pathToDir);
 
@@ -55,7 +53,7 @@ public class OpenServlet extends HttpServlet {
         Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
 
         //tomcat/filebrowser/users/userfolder/selectedfile
-            File path = new File(curPath + File.separator + body[1] + File.separator);
+            File path = new File(pathToDir + File.separator + body[1] + File.separator);
             String[] isZip = path.toString().split("\\.");
             System.out.println(Arrays.toString(isZip));
         if (isZip[isZip.length - 1].equals("zip")) {
