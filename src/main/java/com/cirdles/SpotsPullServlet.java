@@ -1,22 +1,18 @@
 package com.cirdles;
 
-import java.io.IOException;
-import java.util.stream.Collectors;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import org.cirdles.squid.Squid3API;
 import org.cirdles.squid.Squid3Ink;
 import org.cirdles.squid.parameters.parameterModels.ParametersModel;
-import org.cirdles.squid.projects.Squid3ProjectBasicAPI;
 
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.stream.Collectors;
 
 /**
  * Servlet implementation class FileUploadServlet

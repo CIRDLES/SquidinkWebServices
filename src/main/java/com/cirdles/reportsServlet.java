@@ -1,28 +1,25 @@
 package com.cirdles;
 
 
-import java.io.IOException;
-import java.util.stream.Collectors;
+import org.cirdles.squid.Squid3API;
+import org.cirdles.squid.exceptions.SquidException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.cirdles.squid.Squid;
-import org.cirdles.squid.Squid3API;
-import org.cirdles.squid.Squid3Ink;
-import org.cirdles.squid.exceptions.SquidException;
-
-import javax.servlet.annotation.WebServlet;
+import java.io.IOException;
+import java.util.stream.Collectors;
 
 /**
  * Servlet implementation class FileUploadServlet
  */
 
-@WebServlet(name = "reportsServlet", urlPatterns = { "/reportsServlet/*" })
+@WebServlet(name = "reportsServlet", urlPatterns = {"/reportsServlet/*"})
 @MultipartConfig(
-        fileSizeThreshold = 1024 * 1024 *1, // MB
+        fileSizeThreshold = 1024 * 1024 * 1, // MB
         maxFileSize = 1024 * 1024 * 10, // 10 MB
         maxRequestSize = 1024 * 1024 * 100 // 100 MB
 )
@@ -30,14 +27,15 @@ import javax.servlet.annotation.WebServlet;
 
 public class reportsServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -45,13 +43,14 @@ public class reportsServlet extends HttpServlet {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -62,10 +61,10 @@ public class reportsServlet extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -75,12 +74,12 @@ public class reportsServlet extends HttpServlet {
             Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body);
             squid.generateAllSquid3ProjectReports();
             response.getWriter().println("done");
-        }
-        catch(SquidException e) {
+        } catch (SquidException e) {
             e.printStackTrace();
             response.getWriter().print(e);
         }
-         }
+    }
+
     /**
      * Returns a short description of the servlet.
      *

@@ -1,36 +1,26 @@
 package com.cirdles;
 
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.stream.Collectors;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.cirdles.squid.Squid3API;
-import org.cirdles.squid.Squid3Ink;
-import org.cirdles.squid.exceptions.SquidException;
-
-import javax.servlet.annotation.WebServlet;
-
-
+import java.io.File;
+import java.io.IOException;
+import java.util.stream.Collectors;
 
 
 public class SaveAsPreflight extends HttpServlet {
     private static final long serialVersionUID = 1L;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -38,13 +28,14 @@ public class SaveAsPreflight extends HttpServlet {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -55,10 +46,10 @@ public class SaveAsPreflight extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -68,15 +59,15 @@ public class SaveAsPreflight extends HttpServlet {
                 System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body[0] + File.separator + body[1];
         try {
             File newSquidFile = new File(curPath);
-            if(newSquidFile.exists()) {
-                response.sendError(412,"This file already exists, are you sure you want to overwrite it?");
+            if (newSquidFile.exists()) {
+                response.sendError(412, "This file already exists, are you sure you want to overwrite it?");
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             response.getWriter().println(e);
             e.printStackTrace();
         }
     }
+
     /**
      * Returns a short description of the servlet.
      *
