@@ -45,17 +45,17 @@ public class OpenServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        try {
         String[] body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split(":");
         String curPath =
                 System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body[0];
         String pathToDir = System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body[0];
         response.getWriter().println(pathToDir);
+
         this.getServletConfig().getServletContext().setAttribute(body[0], Squid3Ink.spillSquid3Ink(pathToDir));
         Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
 
         //tomcat/filebrowser/users/userfolder/selectedfile
-        try {
             File path = new File(curPath + File.separator + body[1] + File.separator);
             String[] isZip = path.toString().split("\\.");
             System.out.println(Arrays.toString(isZip));
@@ -68,12 +68,13 @@ public class OpenServlet extends HttpServlet {
         else if(isZip[isZip.length - 1].equals("xml")){
             squid.newSquid3GeochronProjectFromPrawnXML(path.toPath());
         }
+        this.getServletConfig().getServletContext().setAttribute("squid3API", squid);
         }
         catch(Exception e) {
             e.printStackTrace();
             response.getWriter().print(e);
         }
-        this.getServletConfig().getServletContext().setAttribute("squid3API", squid);
+
     }
 
     /**
