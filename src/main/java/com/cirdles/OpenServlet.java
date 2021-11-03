@@ -70,10 +70,8 @@ public class OpenServlet extends HttpServlet {
         this.getServletConfig().getServletContext().setAttribute("squid3API", squid);
         }
         catch(Exception e) {
-            e.printStackTrace();
             response.getWriter().print(e);
         }
-
     }
 
     /**

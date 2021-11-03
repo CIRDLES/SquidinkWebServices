@@ -14,6 +14,8 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.cirdles.squid.Squid;
 import org.cirdles.squid.Squid3API;
 import org.cirdles.squid.Squid3Ink;
 import org.cirdles.squid.exceptions.SquidException;
@@ -73,7 +75,7 @@ public class SpotRemovalServlet extends HttpServlet {
             spotList.add(spotName);
             squid.removeSpotsFromDataFile(spotList);
         }
-        catch (Exception e) {
+        catch (SquidException e) {
             response.getWriter().println(e);
             e.printStackTrace();
         }

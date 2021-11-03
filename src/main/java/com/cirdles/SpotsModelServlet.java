@@ -13,6 +13,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.cirdles.squid.Squid3API;
 import org.cirdles.squid.Squid3Ink;
+import org.cirdles.squid.exceptions.SquidException;
 import org.cirdles.squid.parameters.parameterModels.ParametersModel;
 import org.cirdles.squid.projects.Squid3ProjectBasicAPI;
 
@@ -94,7 +95,7 @@ public class SpotsModelServlet extends HttpServlet {
             }
             response.getWriter().println("Updated " + body[1] + " Model");
         }
-        catch(Exception e) {
+        catch(SquidException | NullPointerException e) {
             e.printStackTrace();
             response.getWriter().print(e);
         }

@@ -71,7 +71,7 @@ public class SaveAsServlet extends HttpServlet {
             File newSquidFile = new File(curPath);
             squid.saveAsSquid3Project(newSquidFile);
         }
-        catch (Exception e) {
+        catch (SquidException e) {
             response.getWriter().println(e);
             e.printStackTrace();
         }

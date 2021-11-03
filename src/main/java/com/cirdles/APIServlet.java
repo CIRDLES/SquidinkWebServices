@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.cirdles.squid.Squid3API;
 import org.cirdles.squid.Squid3Ink;
+import org.cirdles.squid.exceptions.SquidException;
+
 import javax.servlet.annotation.WebServlet;
 
 
@@ -65,7 +67,7 @@ public class APIServlet extends HttpServlet {
             this.getServletConfig().getServletContext().setAttribute(body, Squid3Ink.spillSquid3Ink(path));
         }
         }
-        catch(Exception e) {
+        catch(SquidException e) {
             e.printStackTrace();
             response.getWriter().print(e);
         }

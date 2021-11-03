@@ -3,6 +3,7 @@ package com.cirdles;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,6 +13,8 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.cirdles.squid.Squid;
 import org.cirdles.squid.Squid3API;
 import org.cirdles.squid.Squid3Ink;
 import org.cirdles.squid.exceptions.SquidException;
@@ -83,7 +86,7 @@ public class SaveServlet extends HttpServlet {
                 File newSquidFile = new File(curPath + File.separator + body[1]);
                 squid.saveAsSquid3Project(newSquidFile);
             }
-            catch(Exception ex) {
+            catch(SquidException | IOException | SecurityException ex) {
                 response.getWriter().println(ex);
                 ex.printStackTrace();
             }

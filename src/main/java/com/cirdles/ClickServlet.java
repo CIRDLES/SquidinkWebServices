@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.cirdles.squid.Squid3API;
 import org.cirdles.squid.Squid3Ink;
+import org.cirdles.squid.exceptions.SquidException;
+
 import static org.cirdles.squid.constants.Squid3Constants.DEMO_SQUID_PROJECTS_FOLDER;
 import javax.servlet.annotation.WebServlet;
 
@@ -88,7 +90,7 @@ public class ClickServlet extends HttpServlet {
             Files.copy(basepath, target, StandardCopyOption.REPLACE_EXISTING);
             squid.openSquid3Project(target);
         }
-        catch(Exception e) {
+        catch(SquidException | IOException | SecurityException e) {
             e.printStackTrace();
             response.getWriter().print(e);
         }

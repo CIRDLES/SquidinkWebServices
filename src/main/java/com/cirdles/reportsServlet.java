@@ -8,8 +8,12 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.cirdles.squid.Squid;
 import org.cirdles.squid.Squid3API;
 import org.cirdles.squid.Squid3Ink;
+import org.cirdles.squid.exceptions.SquidException;
+
 import javax.servlet.annotation.WebServlet;
 
 /**
@@ -72,7 +76,7 @@ public class reportsServlet extends HttpServlet {
             squid.generateAllSquid3ProjectReports();
             response.getWriter().println("done");
         }
-        catch(Exception e) {
+        catch(SquidException e) {
             e.printStackTrace();
             response.getWriter().print(e);
         }

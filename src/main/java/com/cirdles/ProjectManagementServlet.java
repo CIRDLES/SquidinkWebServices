@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.cirdles.squid.Squid3API;
 import org.cirdles.squid.Squid3Ink;
+import org.cirdles.squid.exceptions.SquidException;
 import org.cirdles.squid.parameters.parameterModels.ParametersModel;
 import org.cirdles.squid.projects.Squid3ProjectBasicAPI;
 
@@ -98,7 +99,7 @@ public class ProjectManagementServlet extends HttpServlet {
             }
             response.getWriter().println(out);
         }
-        catch(Exception e) {
+        catch(SquidException e) {
             e.printStackTrace();
             response.getWriter().print(e);
         }

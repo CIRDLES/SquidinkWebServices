@@ -70,7 +70,7 @@ public class SpotRestoreServlet extends HttpServlet {
         try {
             squid.restoreAllSpotsToDataFile();
         }
-        catch (Exception e) {
+        catch (SquidException e) {
             response.getWriter().println(e);
             e.printStackTrace();
         }
