@@ -149,6 +149,12 @@
     <servlet-name>SaveAsPreflight</servlet-name>
     <servlet-class>com.cirdles.SaveAsPreflight</servlet-class>
   </servlet>
+  <servlet>
+    <description></description>
+    <display-name>RefMatWarningServlet</display-name>
+    <servlet-name>RefMatWarningServlet</servlet-name>
+    <servlet-class>com.cirdles.RefMatWarningServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>ClickServlet</servlet-name>
     <url-pattern>/clickServlet/*</url-pattern>
@@ -168,6 +174,10 @@
   <servlet-mapping>
     <servlet-name>SaveServlet</servlet-name>
     <url-pattern>/save/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>RefMatWarningServlet</servlet-name>
+    <url-pattern>/refwarning</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>IndividReportServlet</servlet-name>

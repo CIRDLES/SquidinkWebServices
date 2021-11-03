@@ -8,20 +8,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.cirdles.squid.Squid3API;
-import org.cirdles.squid.Squid3Ink;
-import org.cirdles.squid.exceptions.SquidException;
-
-import javax.servlet.annotation.WebServlet;
+import org.cirdles.squid.projects.Squid3ProjectBasicAPI;
 
 
-
-
-public class SaveServlet extends HttpServlet {
+public class RefMatWarningServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -63,31 +57,16 @@ public class SaveServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String[] body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split(":");
-        String curPath =
-                System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body[0];
-        Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
-        try {
-            squid.saveCurrentSquid3Project();
-            Path source = Paths.get(curPath + File.separator + body[1] + File.separator);
-            String siblingPath = (curPath + File.separator + body[1]);
-            int index = siblingPath.lastIndexOf("/");
-            if(index>=0)
-                siblingPath = siblingPath.substring(0, index);
-            Files.move(source, source.resolveSibling(siblingPath + File.separator + squid.getSquid3Project().getProjectName() + ".squid"));
+        String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+        Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body);
+        Squid3ProjectBasicAPI squidProject = squid.getSquid3Project();
+        if(squidProject.isTypeGeochron() && squidProject.getTask().getReferenceMaterialSpots().isEmpty()) {
+            response.getWriter().print(true);
         }
-        catch (Exception e) {
-            //Fall-back case for .xml/zip files that do not already have a present .squid file to reference
-            try {
+        else {
+            response.getWriter().print(false);
+        }
 
-                File newSquidFile = new File(curPath + File.separator + body[1]);
-                squid.saveAsSquid3Project(newSquidFile);
-            }
-            catch(Exception ex) {
-                response.getWriter().println(ex);
-                ex.printStackTrace();
-            }
-        }
     }
     /**
      * Returns a short description of the servlet.
