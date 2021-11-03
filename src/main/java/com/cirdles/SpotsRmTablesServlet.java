@@ -72,40 +72,43 @@ public class SpotsRmTablesServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        String body[] = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split("!@#");
-        Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
-        String clear = "";
-        if(body[1].equals("RM")) {
-            if(body[2].equals("clear")) {
-                squid.setReferenceMaterialSampleName(clear);
-                for(ParametersModel model : Squid3Ink.getSquidLabData().getReferenceMaterials()) {
-                    if(model.getModelName() == "NONE") {
-                        squid.updateRefMatModelChoice(model);
+        try {
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            String body[] = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split("!@#");
+            Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
+            String clear = "";
+            if (body[1].equals("RM")) {
+                if (body[2].equals("clear")) {
+                    squid.setReferenceMaterialSampleName(clear);
+                    for (ParametersModel model : Squid3Ink.getSquidLabData().getReferenceMaterials()) {
+                        if (model.getModelName() == "NONE") {
+                            squid.updateRefMatModelChoice(model);
+                        }
                     }
+
+                } else {
+                    squid.setReferenceMaterialSampleName(body[2]);
                 }
 
-            }
-            else {
-                squid.setReferenceMaterialSampleName(body[2]);
-            }
-
-        }
-        else {
-            if(body[2].equals("clear")) {
-                squid.setConcReferenceMaterialSampleName(clear);
-                for(ParametersModel model : Squid3Ink.getSquidLabData().getReferenceMaterials()) {
-                    if(model.getModelName() == "NONE") {
-                        squid.updateConcRefMatModelChoice(model);
+            } else {
+                if (body[2].equals("clear")) {
+                    squid.setConcReferenceMaterialSampleName(clear);
+                    for (ParametersModel model : Squid3Ink.getSquidLabData().getReferenceMaterials()) {
+                        if (model.getModelName() == "NONE") {
+                            squid.updateConcRefMatModelChoice(model);
+                        }
                     }
+                } else {
+                    squid.setConcReferenceMaterialSampleName(body[2]);
                 }
             }
-            else {
-                squid.setConcReferenceMaterialSampleName(body[2]);
-            }
+            response.getWriter().println("Replaced " + body[1] + " Sample Name with " + body[2]);
         }
-        response.getWriter().println("Replaced " + body[1] + " Sample Name with " + body[2]);
+        catch(Exception e) {
+            e.printStackTrace();
+            response.getWriter().print(e);
+        }
     }
 
     /**

@@ -72,13 +72,19 @@ public class SpotsUpdateServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        String[] body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split("!@#");
-        Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
-        Squid3ProjectBasicAPI infoPull = squid.getSquid3Project();
-        Gson gson = new Gson();
-        response.getWriter().println(gson.toJson(squid.getArrayOfSpotSummariesFromSample(body[1])));
+        try {
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            String[] body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split("!@#");
+            Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
+            Squid3ProjectBasicAPI infoPull = squid.getSquid3Project();
+            Gson gson = new Gson();
+            response.getWriter().println(gson.toJson(squid.getArrayOfSpotSummariesFromSample(body[1])));
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            response.getWriter().print(e);
+        }
 
     }
 

@@ -58,10 +58,16 @@ public class APIServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try {
         String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
         if(this.getServletConfig().getServletContext().getAttribute(body) == null) {
             String path = System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body;
             this.getServletConfig().getServletContext().setAttribute(body, Squid3Ink.spillSquid3Ink(path));
+        }
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            response.getWriter().print(e);
         }
     }
 

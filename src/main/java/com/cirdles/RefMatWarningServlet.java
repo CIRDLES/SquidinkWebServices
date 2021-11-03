@@ -57,14 +57,19 @@ public class RefMatWarningServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-        Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body);
-        Squid3ProjectBasicAPI squidProject = squid.getSquid3Project();
-        if(squidProject.isTypeGeochron() && squidProject.getTask().getReferenceMaterialSpots().isEmpty()) {
-            response.getWriter().print(true);
+        try {
+            String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+            Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body);
+            Squid3ProjectBasicAPI squidProject = squid.getSquid3Project();
+            if (squidProject.isTypeGeochron() && squidProject.getTask().getReferenceMaterialSpots().isEmpty()) {
+                response.getWriter().print(true);
+            } else {
+                response.getWriter().print(false);
+            }
         }
-        else {
-            response.getWriter().print(false);
+        catch(Exception e) {
+            e.printStackTrace();
+            response.getWriter().print(e);
         }
 
     }

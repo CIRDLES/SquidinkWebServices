@@ -72,14 +72,20 @@ public class SpotsNameUpdateServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        String body[] = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split("!@#");
-        Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
-        String oldName = body[1].trim();
-        String newName = body[2].trim();
-        squid.updateSpotName(oldName, newName);
-        response.getWriter().println("Changed spot: " + oldName + " to: " + newName);
+        try {
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            String body[] = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split("!@#");
+            Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
+            String oldName = body[1].trim();
+            String newName = body[2].trim();
+            squid.updateSpotName(oldName, newName);
+            response.getWriter().println("Changed spot: " + oldName + " to: " + newName);
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            response.getWriter().print(e);
+        }
     }
 
     /**

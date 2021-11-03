@@ -70,10 +70,13 @@ public class ClickServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-        String pathToDir = System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body;
-        this.getServletConfig().getServletContext().setAttribute(body, Squid3Ink.spillSquid3Ink(pathToDir));
-        Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body);
+        try {
+
+
+            String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+            String pathToDir = System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body;
+            this.getServletConfig().getServletContext().setAttribute(body, Squid3Ink.spillSquid3Ink(pathToDir));
+            Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body);
             File localDemoFile = new File(DEMO_SQUID_PROJECTS_FOLDER.getAbsolutePath()
                     + File.separator + "SQUID3_demo_file.squid");
             Path basepath = localDemoFile.toPath();
@@ -84,10 +87,11 @@ public class ClickServlet extends HttpServlet {
             response.getWriter().println(target.toString());
             Files.copy(basepath, target, StandardCopyOption.REPLACE_EXISTING);
             squid.openSquid3Project(target);
-
-        //catch(Exception e) {
-        //    response.getWriter().println(e);
-        //}
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            response.getWriter().print(e);
+        }
     }
 
     /**

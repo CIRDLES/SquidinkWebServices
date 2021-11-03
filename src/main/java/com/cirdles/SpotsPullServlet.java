@@ -73,8 +73,6 @@ public class SpotsPullServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-
-
         response.setContentType("application/json");
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setCharacterEncoding("UTF-8");

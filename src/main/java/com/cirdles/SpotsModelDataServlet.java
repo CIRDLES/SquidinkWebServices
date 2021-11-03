@@ -74,15 +74,16 @@ public class SpotsModelDataServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        String body[] = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split("!@#");
-        Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
-        Gson gson = new Gson();
-        //Find corresponding RM ParametersModel Object
-            for( ParametersModel model: Squid3Ink.getSquidLabData().getReferenceMaterials()) {
+        try {
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            String body[] = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split("!@#");
+            Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
+            Gson gson = new Gson();
+            //Find corresponding RM ParametersModel Object
+            for (ParametersModel model : Squid3Ink.getSquidLabData().getReferenceMaterials()) {
                 if (model.getModelNameWithVersion().equals(body[1])) {
-                    ReferenceMaterialModel curModel = (ReferenceMaterialModel)model;
+                    ReferenceMaterialModel curModel = (ReferenceMaterialModel) model;
                     response.getWriter().println(gson.toJson(squid.produceAuditOfRefMatModel(curModel)));
                     response.getWriter().println(gson.toJson(squid.get206_238DateMa(curModel)));
                     response.getWriter().println(gson.toJson(squid.get207_206DateMa(curModel)));
@@ -90,15 +91,21 @@ public class SpotsModelDataServlet extends HttpServlet {
                     response.getWriter().println(gson.toJson(squid.get238_235Abundance(curModel)));
                 }
             }
-            for( ParametersModel model: Squid3Ink.getSquidLabData().getReferenceMaterialsWithNonZeroConcentrations()) {
-                if(model.getModelNameWithVersion().equals(body[2])) {
-                    ReferenceMaterialModel curModel = (ReferenceMaterialModel)model;
+            for (ParametersModel model : Squid3Ink.getSquidLabData().getReferenceMaterialsWithNonZeroConcentrations()) {
+                if (model.getModelNameWithVersion().equals(body[2])) {
+                    ReferenceMaterialModel curModel = (ReferenceMaterialModel) model;
                     response.getWriter().println(gson.toJson(squid.getU_ppm(curModel)));
                     response.getWriter().println(gson.toJson(squid.getTh_ppm(curModel)));
                 }
             }
             response.getWriter().println(gson.toJson(squid.getSquid3Project().getReferenceMaterialModel().getModelNameWithVersion()));
-        response.getWriter().println(gson.toJson(squid.getSquid3Project().getConcentrationReferenceMaterialModel().getModelNameWithVersion()));
+            response.getWriter().println(gson.toJson(squid.getSquid3Project().getConcentrationReferenceMaterialModel().getModelNameWithVersion()));
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            response.getWriter().print(e);
+        }
+
     }
 
     /**

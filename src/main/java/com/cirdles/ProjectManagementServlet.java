@@ -68,35 +68,40 @@ public class ProjectManagementServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-        Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body);
-        Squid3ProjectBasicAPI infoPull = squid.getSquid3Project();
-        String out = "";
-        out += infoPull.getProjectName() + "~!@";
-        out += infoPull.getAnalystName() + "~!@";
-        //Missing Routes (Do we even want to include them? Maybe trim?
-        out += infoPull.isUseSBM() + "~!@";
-        out += infoPull.isUserLinFits() + "~!@";
-        out += infoPull.getSelectedIndexIsotope() + "~!@";
-        out += infoPull.isSquidAllowsAutoExclusionOfSpots() + "~!@";
-        out += infoPull.getExtPErrU() + "~!@";
-        out += infoPull.getExtPErrTh() + "~!@";
-        out += infoPull.getCommonPbModel().getModelNameWithVersion() + "~!@";
-        out += infoPull.getPhysicalConstantsModel().getModelNameWithVersion() + "~!@";
-        out += infoPull.getSessionDurationHours() + "~!@";
-        out += infoPull.getProjectNotes() + "~!@";
-        out += infoPull.getPrawnFileShrimpSoftwareVersionName() + "~!@";
-        out += infoPull.getPrawnSourceFilePath() + "~!@";
-        out += infoPull.generatePrefixTreeFromSpotNames().buildSummaryDataString() + "~!@";
-        for( ParametersModel model: Squid3Ink.getSquidLabData().getCommonPbModels()) {
-            out+= model.getModelNameWithVersion() + "*&^";
+        try {
+            String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+            Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body);
+            Squid3ProjectBasicAPI infoPull = squid.getSquid3Project();
+            String out = "";
+            out += infoPull.getProjectName() + "~!@";
+            out += infoPull.getAnalystName() + "~!@";
+            //Missing Routes (Do we even want to include them? Maybe trim?
+            out += infoPull.isUseSBM() + "~!@";
+            out += infoPull.isUserLinFits() + "~!@";
+            out += infoPull.getSelectedIndexIsotope() + "~!@";
+            out += infoPull.isSquidAllowsAutoExclusionOfSpots() + "~!@";
+            out += infoPull.getExtPErrU() + "~!@";
+            out += infoPull.getExtPErrTh() + "~!@";
+            out += infoPull.getCommonPbModel().getModelNameWithVersion() + "~!@";
+            out += infoPull.getPhysicalConstantsModel().getModelNameWithVersion() + "~!@";
+            out += infoPull.getSessionDurationHours() + "~!@";
+            out += infoPull.getProjectNotes() + "~!@";
+            out += infoPull.getPrawnFileShrimpSoftwareVersionName() + "~!@";
+            out += infoPull.getPrawnSourceFilePath() + "~!@";
+            out += infoPull.generatePrefixTreeFromSpotNames().buildSummaryDataString() + "~!@";
+            for (ParametersModel model : Squid3Ink.getSquidLabData().getCommonPbModels()) {
+                out += model.getModelNameWithVersion() + "*&^";
+            }
+            out += "~!@";
+            for (ParametersModel model : Squid3Ink.getSquidLabData().getPhysicalConstantsModels()) {
+                out += model.getModelNameWithVersion() + "*&^";
+            }
+            response.getWriter().println(out);
         }
-        out += "~!@";
-        for( ParametersModel model : Squid3Ink.getSquidLabData().getPhysicalConstantsModels()) {
-            out+= model.getModelNameWithVersion() + "*&^";
+        catch(Exception e) {
+            e.printStackTrace();
+            response.getWriter().print(e);
         }
-        response.getWriter().println(out);
-
     }
 
     /**

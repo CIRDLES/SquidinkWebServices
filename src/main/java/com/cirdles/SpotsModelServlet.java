@@ -72,26 +72,32 @@ public class SpotsModelServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/plain");
-        response.setCharacterEncoding("UTF-8");
-        String body[] = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split("!@#");
-        Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
-        if(body[1].equals("rmModel")) {
-            for( ParametersModel model: Squid3Ink.getSquidLabData().getReferenceMaterials()) {
-                if (model.getModelNameWithVersion().equals(body[2])) {
-                    response.getWriter().println("Model Found");
-                    squid.updateRefMatModelChoice(model);
+        try {
+            response.setContentType("text/plain");
+            response.setCharacterEncoding("UTF-8");
+            String body[] = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split("!@#");
+            Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
+            if (body[1].equals("rmModel")) {
+                for (ParametersModel model : Squid3Ink.getSquidLabData().getReferenceMaterials()) {
+                    if (model.getModelNameWithVersion().equals(body[2])) {
+                        response.getWriter().println("Model Found");
+                        squid.updateRefMatModelChoice(model);
+                    }
                 }
-            }
-        }
-        else {
-                for( ParametersModel model: Squid3Ink.getSquidLabData().getReferenceMaterialsWithNonZeroConcentrations()) {
-                    if(model.getModelNameWithVersion().equals(body[2])) {
+            } else {
+                for (ParametersModel model : Squid3Ink.getSquidLabData().getReferenceMaterialsWithNonZeroConcentrations()) {
+                    if (model.getModelNameWithVersion().equals(body[2])) {
                         response.getWriter().println("Model Found");
                         squid.updateConcRefMatModelChoice(model);
                     }
-        }}
-        response.getWriter().println("Updated " + body[1] + " Model");
+                }
+            }
+            response.getWriter().println("Updated " + body[1] + " Model");
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            response.getWriter().print(e);
+        }
     }
 
     /**

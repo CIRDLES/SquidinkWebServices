@@ -66,7 +66,6 @@ public class IndividReportServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         String[] body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split(":");
         Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
         try {
@@ -82,7 +81,8 @@ public class IndividReportServlet extends HttpServlet {
                 response.getWriter().println(squid.generatePerScanReports().toString());
             }
         }
-        catch(IOException e) {
+        catch(Exception e) {
+            e.printStackTrace();
             response.getWriter().println(e);
         }
         response.getWriter().println("done");
