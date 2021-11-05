@@ -75,25 +75,88 @@ public class SpotsPullServlet extends HttpServlet {
         String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
         Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body);
         Gson gson = new Gson();
-        response.getWriter().println(gson.toJson(squid.getArrayOfSampleNames()));
-        response.getWriter().println(gson.toJson(squid.getArrayOfSpotSummariesFromSample("ALL SAMPLES")));
-        response.getWriter().println(gson.toJson(squid.getArrayOfSpotSummariesFromSample(squid.getReferenceMaterialSampleName())));
-        response.getWriter().println(gson.toJson(squid.getArrayOfSpotSummariesFromSample(squid.getConcReferenceMaterialSampleName())));
-        response.getWriter().println(gson.toJson(squid.getReferenceMaterialSampleName()));
-        response.getWriter().println(gson.toJson(squid.getConcReferenceMaterialSampleName()));
-        String out = "";
-        for( ParametersModel model: Squid3Ink.getSquidLabData().getReferenceMaterials()) {
-            out+= model.getModelNameWithVersion() + "!@#";
-        }
-        response.getWriter().println(out.substring(0,out.length() - 3));
-        out = "";
-        for( ParametersModel model: Squid3Ink.getSquidLabData().getReferenceMaterialsWithNonZeroConcentrations()) {
-            out+= model.getModelNameWithVersion() + "!@#";
-        }
-        response.getWriter().println(out.substring(0,out.length() - 3));
-        response.getWriter().println(gson.toJson(squid.getSquid3Project().getReferenceMaterialModel().getModelNameWithVersion()));
-        response.getWriter().println(gson.toJson(squid.getSquid3Project().getConcentrationReferenceMaterialModel().getModelNameWithVersion()));
-        response.getWriter().println(gson.toJson(squid.getRemovedSpotsByName().isEmpty()));
+            try {
+                response.getWriter().println(gson.toJson(squid.getArrayOfSampleNames()));
+            } catch (IOException e) {
+                response.getWriter().println(gson.toJson(new String[1]));
+            }
+            try {
+                response.getWriter().println(gson.toJson(squid.getArrayOfSpotSummariesFromSample("ALL SAMPLES")));
+            } catch (IOException e) {
+                response.getWriter().println(gson.toJson(new String[1][1]));
+            }
+            try {
+                response.getWriter().println(gson.toJson(squid.getArrayOfSpotSummariesFromSample(squid.getReferenceMaterialSampleName())));
+            } catch (IOException e) {
+                response.getWriter().println(gson.toJson(new String[1][1]));
+            }
+            try {
+                response.getWriter().println(gson.toJson(squid.getArrayOfSpotSummariesFromSample(squid.getConcReferenceMaterialSampleName())));
+            } catch (IOException e) {
+                response.getWriter().println(gson.toJson(new String[1][1]));
+            }
+            try {
+                response.getWriter().println(gson.toJson(squid.getReferenceMaterialSampleName()));
+            } catch (IOException e) {
+                response.getWriter().println(gson.toJson(""));
+            }
+            try {
+                response.getWriter().println(gson.toJson(squid.getConcReferenceMaterialSampleName()));
+            } catch (IOException e) {
+                response.getWriter().println(gson.toJson(""));
+            }
+            String out = null;
+            try {
+                out = "";
+                for( ParametersModel model: Squid3Ink.getSquidLabData().getReferenceMaterials()) {
+                    if(model.isEditable()) {
+                        out += model.getModelNameWithVersion();
+                    }
+                    else {
+                        out += model.getModelNameWithVersion() + " <Built-in>";
+                    }
+                    out += "!@#";
+                }
+                response.getWriter().println(out.substring(0,out.length() - 3));
+            } catch (IOException e) {
+                response.getWriter().println(gson.toJson(""));
+            }
+            out = "";
+            try {
+                for( ParametersModel model: Squid3Ink.getSquidLabData().getReferenceMaterialsWithNonZeroConcentrations()) {
+                    if(model.isEditable()) {
+                        out += model.getModelNameWithVersion();
+                    }
+                    else {
+                        out += model.getModelNameWithVersion() + " <Built-in>";
+                    }
+                    out += "!@#";
+                }
+                response.getWriter().println(out.substring(0,out.length() - 3));
+            } catch (IOException e) {
+                response.getWriter().println(gson.toJson(""));
+            }
+            try {
+                if(squid.getSquid3Project().getReferenceMaterialModel().isEditable()) {
+                    response.getWriter().println(gson.toJson(squid.getSquid3Project().getReferenceMaterialModel().getModelNameWithVersion()));
+                }
+                else {
+                    response.getWriter().println(gson.toJson(squid.getSquid3Project().getReferenceMaterialModel().getModelNameWithVersion() + " <Built-in>"));
+                }
+            } catch (IOException e) {
+                response.getWriter().println(gson.toJson(""));
+            }
+            try {
+                if(squid.getSquid3Project().getConcentrationReferenceMaterialModel().isEditable()) {
+                    response.getWriter().println(gson.toJson(squid.getSquid3Project().getConcentrationReferenceMaterialModel().getModelNameWithVersion()));
+                }
+                else {
+                    response.getWriter().println(gson.toJson(squid.getSquid3Project().getConcentrationReferenceMaterialModel().getModelNameWithVersion() + " <Built-in>"));
+                }
+            } catch (IOException e) {
+                response.getWriter().println(gson.toJson(""));
+            }
+            response.getWriter().println(gson.toJson(squid.getRemovedSpotsByName().isEmpty()));
         }
         catch(Exception e) {
             response.getWriter().println(e);

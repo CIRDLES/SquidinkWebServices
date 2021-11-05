@@ -76,31 +76,126 @@ public class ProjectManagementServlet extends HttpServlet {
             Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body);
             Squid3ProjectBasicAPI infoPull = squid.getSquid3Project();
             String out = "";
-            out += infoPull.getProjectName() + "~!@";
-            out += infoPull.getAnalystName() + "~!@";
-            //Missing Routes (Do we even want to include them? Maybe trim?
-            out += infoPull.isUseSBM() + "~!@";
-            out += infoPull.isUserLinFits() + "~!@";
-            out += infoPull.getSelectedIndexIsotope() + "~!@";
-            out += infoPull.isSquidAllowsAutoExclusionOfSpots() + "~!@";
-            out += infoPull.getExtPErrU() + "~!@";
-            out += infoPull.getExtPErrTh() + "~!@";
-            out += infoPull.getCommonPbModel().getModelNameWithVersion() + "~!@";
-            out += infoPull.getPhysicalConstantsModel().getModelNameWithVersion() + "~!@";
-            out += infoPull.getSessionDurationHours() + "~!@";
-            out += infoPull.getProjectNotes() + "~!@";
-            out += infoPull.getPrawnFileShrimpSoftwareVersionName() + "~!@";
-            out += infoPull.getPrawnFileHandler().getCurrentPrawnSourceFileLocation() + "~!@";
-            out += infoPull.generatePrefixTreeFromSpotNames().buildSummaryDataString() + "~!@";
-            for (ParametersModel model : Squid3Ink.getSquidLabData().getCommonPbModels()) {
-                out += model.getModelNameWithVersion() + "*&^";
+
+            try {
+                out += infoPull.getProjectName() + "~!@";
+            } catch (Exception e) {
+                out += "NO_NAME~!@";
             }
-            out += "~!@";
-            for (ParametersModel model : Squid3Ink.getSquidLabData().getPhysicalConstantsModels()) {
-                out += model.getModelNameWithVersion() + "*&^";
+            try {
+                out += infoPull.getAnalystName() + "~!@";
+            } catch (Exception e) {
+                out += "~!@";
+            }
+            //Missing Routes (Do we even want to include them? Maybe trim?
+            try {
+                out += infoPull.isUseSBM() + "~!@";
+            } catch (Exception e) {
+                out += true + "~!@";
+            }
+            try {
+                out += infoPull.isUserLinFits() + "~!@";
+            } catch (Exception e) {
+                out += false + "~!@";
+            }
+            try {
+                out += infoPull.getSelectedIndexIsotope() + "~!@";
+            } catch (Exception e) {
+                out += "~!@";
+            }
+            try {
+                out += infoPull.isSquidAllowsAutoExclusionOfSpots() + "~!@";
+            } catch (Exception e) {
+                out += false + "~!@";
+            }
+            try {
+                out += infoPull.getExtPErrU() + "~!@";
+            } catch (Exception e) {
+                out += "0~!@";
+            }
+            try {
+                out += infoPull.getExtPErrTh() + "~!@";
+            } catch (Exception e) {
+                out += "0~!@";
+            }
+            try {
+                if(infoPull.getCommonPbModel().isEditable()) {
+                    out += infoPull.getCommonPbModel().getModelNameWithVersion();
+                }
+                else {
+                    out += infoPull.getCommonPbModel().getModelNameWithVersion() + " <Built-in>";
+                }
+                out += "~!@";
+            } catch (Exception e) {
+                out += "~!@";
+            }
+            try {
+                if(infoPull.getPhysicalConstantsModel().isEditable()) {
+                    out += infoPull.getPhysicalConstantsModel().getModelNameWithVersion();
+                }
+                else {
+                    out += infoPull.getPhysicalConstantsModel().getModelNameWithVersion() + " <Built-in>";
+                }
+                out += "~!@";
+            } catch (Exception e) {
+                out += "~!@";
+            }
+            try {
+                out += infoPull.getSessionDurationHours() + "~!@";
+            } catch (Exception e) {
+                out += "~!@";
+            }
+            try {
+                out += infoPull.getProjectNotes() + "~!@";
+            } catch (Exception e) {
+                out += "~!@";
+            }
+            try {
+                out += infoPull.getPrawnFileShrimpSoftwareVersionName() + "~!@";
+            } catch (Exception e) {
+                out += "~!@";
+            }
+            try {
+                out += infoPull.getPrawnFileHandler().getCurrentPrawnSourceFileLocation() + "~!@";
+            } catch (Exception e) {
+                out += "~!@";
+            }
+            try {
+                out += infoPull.generatePrefixTreeFromSpotNames().buildSummaryDataString() + "~!@";
+            } catch (Exception e) {
+                out += "~!@";
+            }
+            try {
+                for (ParametersModel model : Squid3Ink.getSquidLabData().getCommonPbModels()) {
+                    if(model.isEditable()) {
+                        out += model.getModelNameWithVersion();
+                    }
+                    else {
+                        out += model.getModelNameWithVersion() + " <Built-in>";
+                    }
+                    out += "*&^";
+                }
+                out += "~!@";
+            }
+            catch(Exception e) {
+                out += "~!@";
+            }
+            try {
+                for (ParametersModel model : Squid3Ink.getSquidLabData().getPhysicalConstantsModels()) {
+                    if(model.isEditable()) {
+                        out += model.getModelNameWithVersion();
+                    }
+                    else {
+                        out += model.getModelNameWithVersion() + " <Built-in>";
+                    }
+                    out += "*&^";
+                }
+            }
+            catch(Exception e) {
+                out += "";
             }
             response.getWriter().println(out);
-        } catch (SquidException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             response.getWriter().print(e);
         }

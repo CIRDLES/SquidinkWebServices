@@ -77,6 +77,8 @@ public class SpotsModelDataServlet extends HttpServlet {
             String[] body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split("!@#");
             Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
             Gson gson = new Gson();
+            body[1] = body[1].replaceAll("( <Built-in>)", "");
+            body[2] = body[2].replaceAll("( <Built-in>)", "");
             //Find corresponding RM ParametersModel Object
             for (ParametersModel model : Squid3Ink.getSquidLabData().getReferenceMaterials()) {
                 if (model.getModelNameWithVersion().equals(body[1])) {

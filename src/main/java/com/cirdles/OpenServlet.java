@@ -51,7 +51,7 @@ public class OpenServlet extends HttpServlet {
             //tomcat/filebrowser/users/userfolder/selectedfile
             File path = new File(pathToDir + File.separator + body[1] + File.separator);
             String[] isZip = path.toString().split("\\.");
-            System.out.println(Arrays.toString(isZip));
+            System.out.println(path.toString());
             if (isZip[isZip.length - 1].equals("zip")) {
                 squid.newSquid3GeochronProjectFromZippedPrawnXML(path.toPath());
             } else if (isZip[isZip.length - 1].equals("squid")) {
@@ -59,9 +59,14 @@ public class OpenServlet extends HttpServlet {
             } else if (isZip[isZip.length - 1].equals("xml")) {
                 squid.newSquid3GeochronProjectFromPrawnXML(path.toPath());
             }
+              else {
+                squid.newSquid3GeochronProjectFromDataFileOP(path.toPath());
+            }
             this.getServletConfig().getServletContext().setAttribute("squid3API", squid);
         } catch (Exception e) {
             response.getWriter().print(e);
+            e.printStackTrace();
+            System.out.print(e);
         }
     }
 
