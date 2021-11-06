@@ -54,7 +54,14 @@ public class CloseServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-        this.getServletConfig().getServletContext().setAttribute(body, null);
+        //If context is already null, dont allow WebUI to refresh
+        if(this.getServletConfig().getServletContext().getAttribute(body) == null) {
+            response.getWriter().print("0");
+        }
+        else {
+            this.getServletConfig().getServletContext().setAttribute(body, null);
+            response.getWriter().println("1");
+        }
     }
 
     /**
