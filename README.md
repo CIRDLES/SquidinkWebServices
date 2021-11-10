@@ -6,3 +6,5 @@ Servlet Components are built as a .war and included in [SquidInk-Image](https://
 External packages are included / managed in pom.xml by Maven
 
 Servlet Structure and end-point referencing are managed by [src/main/java/com/cirdles](https://github.com/RichardMcCarty1/SquidinkWebServices/tree/master/src/main/java/com/cirdles) and [src/webapp/WEB-INF/web.xml](https://github.com/RichardMcCarty1/SquidinkWebServices/tree/master/src/main/webapp/WEB-INF) respectively
+
+**Filebrowser is referenced by Tomcat as %CATALINA_HOME%/filebrowser/users and should therefore be included in %CATALINA_HOME%**

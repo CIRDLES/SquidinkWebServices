@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
   <display-name>squid_servlet</display-name>
+  <filter>
+    <filter-name>CorsFilter</filter-name>
+
+    <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
+    <init-param>
+      <param-name>cors.allowed.origins</param-name>
+      <param-value>*</param-value>
+    </init-param>
+    <init-param>
+      <param-name>cors.allowed.methods</param-name>
+      <param-value>GET,POST,HEAD,OPTIONS,PUT</param-value>
+    </init-param>
+    <init-param>
+      <param-name>cors.allowed.headers</param-name>
+      <param-value>Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers</param-value>
+    </init-param>
+    <init-param>
+      <param-name>cors.exposed.headers</param-name>
+      <param-value>Access-Control-Allow-Origin,Access-Control-Allow-Credentials</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>CorsFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
@@ -10,11 +35,6 @@
     <welcome-file>default.jsp</welcome-file>
     <welcome-file>uploader.jsp</welcome-file>
   </welcome-file-list>
-  <servlet>
-  <display-name>DownloadServlet</display-name>
-  <servlet-name>DownloadServlet</servlet-name>
-  <servlet-class>com.cirdles.DownloadServlet</servlet-class>
-  </servlet>
   <servlet>
     <description></description>
     <display-name>ClickServlet</display-name>
@@ -51,10 +71,90 @@
     <servlet-name>IndividReportServlet</servlet-name>
     <servlet-class>com.cirdles.IndividReportServlet</servlet-class>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>DownloadServlet</servlet-name>
-    <url-pattern>/download/*</url-pattern>
-  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ProjectManagementServlet</display-name>
+    <servlet-name>ProjectManagementServlet</servlet-name>
+    <servlet-class>com.cirdles.ProjectManagementServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>PmSetServlet</display-name>
+    <servlet-name>PmSetServlet</servlet-name>
+    <servlet-class>com.cirdles.PmSetServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>SpotsPullServlet</display-name>
+    <servlet-name>SpotsPullServlet</servlet-name>
+    <servlet-class>com.cirdles.SpotsPullServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>SpotsUpdateServlet</display-name>
+    <servlet-name>SpotsUpdateServlet</servlet-name>
+    <servlet-class>com.cirdles.SpotsUpdateServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>SpotsRmTablesServlet</display-name>
+    <servlet-name>SpotsRmTablesServlet</servlet-name>
+    <servlet-class>com.cirdles.SpotsRmTablesServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>SpotsModelServlet</display-name>
+    <servlet-name>SpotsModelServlet</servlet-name>
+    <servlet-class>com.cirdles.SpotsModelServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>SpotsModelDataServlet</display-name>
+    <servlet-name>SpotsModelDataServlet</servlet-name>
+    <servlet-class>com.cirdles.SpotsModelDataServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>SpotsNameUpdateServlet</display-name>
+    <servlet-name>SpotsNameUpdateServlet</servlet-name>
+    <servlet-class>com.cirdles.SpotsNameUpdateServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>CloseServlet</display-name>
+    <servlet-name>CloseServlet</servlet-name>
+    <servlet-class>com.cirdles.CloseServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>SaveAsServlet</display-name>
+    <servlet-name>SaveAsServlet</servlet-name>
+    <servlet-class>com.cirdles.SaveAsServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>SpotRemovalServlet</display-name>
+    <servlet-name>SpotRemovalServlet</servlet-name>
+    <servlet-class>com.cirdles.SpotRemovalServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>SpotRestoreServlet</display-name>
+    <servlet-name>SpotRestoreServlet</servlet-name>
+    <servlet-class>com.cirdles.SpotRestoreServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>SaveAsPreflight</display-name>
+    <servlet-name>SaveAsPreflight</servlet-name>
+    <servlet-class>com.cirdles.SaveAsPreflight</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>RefMatWarningServlet</display-name>
+    <servlet-name>RefMatWarningServlet</servlet-name>
+    <servlet-class>com.cirdles.RefMatWarningServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>ClickServlet</servlet-name>
     <url-pattern>/clickServlet/*</url-pattern>
@@ -76,7 +176,63 @@
     <url-pattern>/save/*</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
+    <servlet-name>RefMatWarningServlet</servlet-name>
+    <url-pattern>/refwarning</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
     <servlet-name>IndividReportServlet</servlet-name>
     <url-pattern>/individ</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ProjectManagementServlet</servlet-name>
+    <url-pattern>/pmpull</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PmSetServlet</servlet-name>
+    <url-pattern>/pmset</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SpotsPullServlet</servlet-name>
+    <url-pattern>/spotspull</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SpotsUpdateServlet</servlet-name>
+    <url-pattern>/spotsupdate</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SpotsRmTablesServlet</servlet-name>
+    <url-pattern>/spotstables</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SpotsModelServlet</servlet-name>
+    <url-pattern>/spotsmodels</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SpotsModelDataServlet</servlet-name>
+    <url-pattern>/spotsdata</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SpotsNameUpdateServlet</servlet-name>
+    <url-pattern>/spotsname</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>CloseServlet</servlet-name>
+    <url-pattern>/close</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SaveAsServlet</servlet-name>
+    <url-pattern>/saveAsServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SpotRemovalServlet</servlet-name>
+    <url-pattern>/removespot</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SpotRestoreServlet</servlet-name>
+    <url-pattern>/restorespot</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SaveAsPreflight</servlet-name>
+    <url-pattern>/sapreflight</url-pattern>
   </servlet-mapping>
 </web-app>

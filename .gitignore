@@ -18,3 +18,4 @@ buildNumber.properties
 
 # NPM
 node_modules/
+package-lock.json

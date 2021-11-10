@@ -3,6 +3,7 @@ package com.cirdles;
 import org.cirdles.squid.Squid3API;
 import org.cirdles.squid.Squid3Ink;
 import org.cirdles.squid.exceptions.SquidException;
+import org.cirdles.squid.parameters.parameterModels.ParametersModel;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -10,20 +11,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.stream.Collectors;
-
-import static org.cirdles.squid.constants.Squid3Constants.DEMO_SQUID_PROJECTS_FOLDER;
 
 /**
  * Servlet implementation class FileUploadServlet
  */
 
-@WebServlet(name = "ClickServlet", urlPatterns = {"/ClickServlet/*"})
+@WebServlet(name = "SpotsModelServlet", urlPatterns = {"/spotsmodels"})
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 1, // MB
         maxFileSize = 1024 * 1024 * 10, // 10 MB
@@ -31,7 +26,7 @@ import static org.cirdles.squid.constants.Squid3Constants.DEMO_SQUID_PROJECTS_FO
 )
 
 
-public class ClickServlet extends HttpServlet {
+public class SpotsModelServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -76,23 +71,28 @@ public class ClickServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-
-
-            String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-            String pathToDir = System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body;
-            this.getServletConfig().getServletContext().setAttribute(body, Squid3Ink.spillSquid3Ink(pathToDir));
-            Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body);
-            File localDemoFile = new File(DEMO_SQUID_PROJECTS_FOLDER.getAbsolutePath()
-                    + File.separator + "SQUID3_demo_file.squid");
-            Path basepath = localDemoFile.toPath();
-            Path target = new File(
-                    System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users"
-                            + File.separator + body + File.separator + "SQUID3_demo_file.squid").toPath();
-            response.getWriter().println(basepath.toString());
-            response.getWriter().println(target.toString());
-            Files.copy(basepath, target, StandardCopyOption.REPLACE_EXISTING);
-            squid.openSquid3Project(target);
-        } catch (SquidException | IOException | SecurityException e) {
+            response.setContentType("text/plain");
+            response.setCharacterEncoding("UTF-8");
+            String[] body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split("!@#");
+            Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
+            body[2] = body[2].replaceAll("( <Built-in>)", "");
+            if (body[1].equals("rmModel")) {
+                for (ParametersModel model : Squid3Ink.getSquidLabData().getReferenceMaterials()) {
+                    if (model.getModelNameWithVersion().equals(body[2])) {
+                        response.getWriter().println("Model Found");
+                        squid.updateRefMatModelChoice(model);
+                    }
+                }
+            } else {
+                for (ParametersModel model : Squid3Ink.getSquidLabData().getReferenceMaterialsWithNonZeroConcentrations()) {
+                    if (model.getModelNameWithVersion().equals(body[2])) {
+                        response.getWriter().println("Model Found");
+                        squid.updateConcRefMatModelChoice(model);
+                    }
+                }
+            }
+            response.getWriter().println("Updated " + body[1] + " Model");
+        } catch (SquidException | NullPointerException e) {
             e.printStackTrace();
             response.getWriter().print(e);
         }

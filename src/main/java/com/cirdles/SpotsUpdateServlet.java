@@ -1,8 +1,8 @@
 package com.cirdles;
 
+import com.google.gson.Gson;
 import org.cirdles.squid.Squid3API;
-import org.cirdles.squid.Squid3Ink;
-import org.cirdles.squid.exceptions.SquidException;
+import org.cirdles.squid.projects.Squid3ProjectBasicAPI;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -10,20 +10,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.stream.Collectors;
-
-import static org.cirdles.squid.constants.Squid3Constants.DEMO_SQUID_PROJECTS_FOLDER;
 
 /**
  * Servlet implementation class FileUploadServlet
  */
 
-@WebServlet(name = "ClickServlet", urlPatterns = {"/ClickServlet/*"})
+@WebServlet(name = "SpotsUpdateServlet", urlPatterns = {"/spotsupdate"})
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 1, // MB
         maxFileSize = 1024 * 1024 * 10, // 10 MB
@@ -31,7 +25,7 @@ import static org.cirdles.squid.constants.Squid3Constants.DEMO_SQUID_PROJECTS_FO
 )
 
 
-public class ClickServlet extends HttpServlet {
+public class SpotsUpdateServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -76,26 +70,18 @@ public class ClickServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-
-
-            String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-            String pathToDir = System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body;
-            this.getServletConfig().getServletContext().setAttribute(body, Squid3Ink.spillSquid3Ink(pathToDir));
-            Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body);
-            File localDemoFile = new File(DEMO_SQUID_PROJECTS_FOLDER.getAbsolutePath()
-                    + File.separator + "SQUID3_demo_file.squid");
-            Path basepath = localDemoFile.toPath();
-            Path target = new File(
-                    System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users"
-                            + File.separator + body + File.separator + "SQUID3_demo_file.squid").toPath();
-            response.getWriter().println(basepath.toString());
-            response.getWriter().println(target.toString());
-            Files.copy(basepath, target, StandardCopyOption.REPLACE_EXISTING);
-            squid.openSquid3Project(target);
-        } catch (SquidException | IOException | SecurityException e) {
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            String[] body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split("!@#");
+            Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
+            Squid3ProjectBasicAPI infoPull = squid.getSquid3Project();
+            Gson gson = new Gson();
+            response.getWriter().println(gson.toJson(squid.getArrayOfSpotSummariesFromSample(body[1])));
+        } catch (Exception e) {
             e.printStackTrace();
             response.getWriter().print(e);
         }
+
     }
 
     /**
