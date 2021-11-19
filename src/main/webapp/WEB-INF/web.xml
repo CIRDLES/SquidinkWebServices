@@ -155,6 +155,12 @@
     <servlet-name>RefMatWarningServlet</servlet-name>
     <servlet-class>com.cirdles.RefMatWarningServlet</servlet-class>
   </servlet>
+  <servlet>
+    <description></description>
+    <display-name>CurrentTaskStringsServlet</display-name>
+    <servlet-name>CurrentTaskStringsServlet</servlet-name>
+    <servlet-class>com.cirdles.CurrentTaskStringsServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>ClickServlet</servlet-name>
     <url-pattern>/clickServlet/*</url-pattern>
@@ -234,5 +240,9 @@
   <servlet-mapping>
     <servlet-name>SaveAsPreflight</servlet-name>
     <url-pattern>/sapreflight</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>CurrentTaskStringsServlet</servlet-name>
+    <url-pattern>/curtaskstrings</url-pattern>
   </servlet-mapping>
 </web-app>
