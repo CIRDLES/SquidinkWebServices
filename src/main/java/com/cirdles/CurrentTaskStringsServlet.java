@@ -78,10 +78,10 @@ public class CurrentTaskStringsServlet extends HttpServlet {
             outputArr.add((perm1 || perm3) ? thU : "Not Used");
             outputArr.add(parEle);
 
-            outputArr.add(Boolean.toString(makeExpressionForAudit(UNCOR206PB238U_CALIB_CONST, Uth, squidTask.getNamedExpressionsMap()).amHealthy()));
-            outputArr.add(Boolean.toString(makeExpressionForAudit(UNCOR208PB232TH_CALIB_CONST, Uth_Th, squidTask.getNamedExpressionsMap()).amHealthy()));
-            outputArr.add(Boolean.toString(makeExpressionForAudit(TH_U_EXP_RM, thU, squidTask.getNamedExpressionsMap()).amHealthy()));
-            outputArr.add(Boolean.toString(makeExpressionForAudit(PARENT_ELEMENT_CONC_CONST, parEle, squidTask.getNamedExpressionsMap()).amHealthy()));
+            outputArr.add(Boolean.toString(makeExpressionForAudit(Uth, UNCOR206PB238U_CALIB_CONST, squidTask.getNamedExpressionsMap()).amHealthy()));
+            outputArr.add(Boolean.toString(makeExpressionForAudit(Uth_Th, UNCOR208PB232TH_CALIB_CONST, squidTask.getNamedExpressionsMap()).amHealthy()));
+            outputArr.add(Boolean.toString(makeExpressionForAudit(thU, TH_U_EXP_RM, squidTask.getNamedExpressionsMap()).amHealthy()));
+            outputArr.add(Boolean.toString(makeExpressionForAudit(parEle, PARENT_ELEMENT_CONC_CONST, squidTask.getNamedExpressionsMap()).amHealthy()));
 
             outputArr.add(squidTask.printTaskAudit());
             Gson packager = new Gson();
