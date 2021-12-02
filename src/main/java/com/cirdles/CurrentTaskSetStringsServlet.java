@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import org.cirdles.squid.Squid3API;
 import org.cirdles.squid.constants.Squid3Constants;
 import org.cirdles.squid.Squid3Ink;
+import org.cirdles.squid.exceptions.SquidException;
 import org.cirdles.squid.projects.Squid3ProjectBasicAPI;
 import org.cirdles.squid.tasks.TaskInterface;
 import org.cirdles.squid.tasks.expressions.Expression;
@@ -60,6 +61,11 @@ public class CurrentTaskSetStringsServlet extends HttpServlet {
             squidTask.setProvenance(body[5]);
             squidTask.setParentNuclide(body[6]);
             squidTask.setDirectAltPD(body[7].equals("direct") ? true : false);
+            try {
+                squidTask.applyDirectives();
+            } catch (SquidException squidException) {
+                System.out.println(squidException);
+            }
             response.getWriter().println("Set");
         } catch (Exception e) {
             response.getWriter().print(e);

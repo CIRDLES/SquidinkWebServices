@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import org.cirdles.squid.Squid3API;
 import org.cirdles.squid.constants.Squid3Constants;
 import org.cirdles.squid.Squid3Ink;
+import org.cirdles.squid.exceptions.SquidException;
 import org.cirdles.squid.projects.Squid3ProjectBasicAPI;
 import org.cirdles.squid.tasks.TaskInterface;
 import org.cirdles.squid.tasks.expressions.Expression;
@@ -36,7 +37,9 @@ import static org.cirdles.squid.tasks.expressions.builtinExpressions.BuiltInExpr
 
 
 public class CurrentTaskStringsServlet extends HttpServlet {
+    private TaskInterface task;
     private static final long serialVersionUID = 1L;
+    private boolean perm2;
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -52,38 +55,54 @@ public class CurrentTaskStringsServlet extends HttpServlet {
         try {
             String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
             Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body);
-            TaskInterface squidTask = squid.getSquid3Project().getTask();
-            boolean uPicked = squidTask.getParentNuclide().equals("238");
-            boolean directPicked = squidTask.isDirectAltPD();;
+            task = squid.getSquid3Project().getTask();
+            try {
+                task.setupSquidSessionSpecsAndReduceAndReport(false);
+            } catch (SquidException squidException) {
+                System.out.println(squidException);
+            }
+            boolean uPicked = task.getParentNuclide().equals("238");
+            boolean directPicked = task.isDirectAltPD();;
             boolean perm1 = uPicked && !directPicked;
             boolean perm2 = uPicked && directPicked;
             boolean perm3 = !uPicked && !directPicked;
             boolean perm4 = !uPicked && directPicked;
             ArrayList<String> outputArr = new ArrayList<>();
 
-            outputArr.add(squidTask.getName());
-            outputArr.add(squidTask.getDescription());
-            outputArr.add(squidTask.getAuthorName());
-            outputArr.add(squidTask.getLabName());
-            outputArr.add(squidTask.getProvenance());
-            outputArr.add(squidTask.getParentNuclide());
-            outputArr.add(squidTask.isDirectAltPD() ? "direct":"indirect");
+            outputArr.add(task.getName());
+            outputArr.add(task.getDescription());
+            outputArr.add(task.getAuthorName());
+            outputArr.add(task.getLabName());
+            outputArr.add(task.getProvenance());
+            outputArr.add(task.getParentNuclide());
+            outputArr.add(task.isDirectAltPD() ? "direct":"indirect");
 
-            String Uth = squidTask.getExpressionByName(UNCOR206PB238U_CALIB_CONST) == null ? UNCOR206PB238U_CALIB_CONST_DEFAULT_EXPRESSION  : squidTask.getExpressionByName(UNCOR206PB238U_CALIB_CONST).getExcelExpressionString();
-            String Uth_Th = squidTask.getExpressionByName(UNCOR208PB232TH_CALIB_CONST) == null ? UNCOR208PB232TH_CALIB_CONST_DEFAULT_EXPRESSION  : squidTask.getExpressionByName(UNCOR208PB232TH_CALIB_CONST).getExcelExpressionString();
-            String thU = squidTask.getExpressionByName(TH_U_EXP_RM) == null ? TH_U_EXP_DEFAULT_EXPRESSION  : squidTask.getExpressionByName(TH_U_EXP_RM).getExcelExpressionString();
-            String parEle = squidTask.getExpressionByName(PARENT_ELEMENT_CONC_CONST) == null ? PARENT_ELEMENT_CONC_CONST_DEFAULT_EXPRESSION  : squidTask.getExpressionByName(PARENT_ELEMENT_CONC_CONST).getExcelExpressionString();
-            outputArr.add((perm1 || perm2 || perm4) ? Uth : "Not Used");
-            outputArr.add((perm2 || perm3 || perm4) ? Uth_Th : "Not Used");
-            outputArr.add((perm1 || perm3) ? thU : "Not Used");
-            outputArr.add(parEle);
+            Expression UTh_U = task.getExpressionByName(UNCOR206PB238U_CALIB_CONST);
+            String UTh_U_ExpressionString = (UTh_U == null) ? UNCOR206PB238U_CALIB_CONST_DEFAULT_EXPRESSION : UTh_U.getExcelExpressionString();
 
-            outputArr.add(Boolean.toString(makeExpressionForAudit(Uth, UNCOR206PB238U_CALIB_CONST, squidTask.getNamedExpressionsMap()).amHealthy()));
-            outputArr.add(Boolean.toString(makeExpressionForAudit(Uth_Th, UNCOR208PB232TH_CALIB_CONST, squidTask.getNamedExpressionsMap()).amHealthy()));
-            outputArr.add(Boolean.toString(makeExpressionForAudit(thU, TH_U_EXP_RM, squidTask.getNamedExpressionsMap()).amHealthy()));
-            outputArr.add(Boolean.toString(makeExpressionForAudit(parEle, PARENT_ELEMENT_CONC_CONST, squidTask.getNamedExpressionsMap()).amHealthy()));
+            Expression UTh_Th = task.getExpressionByName(UNCOR208PB232TH_CALIB_CONST);
+            String UTh_Th_ExpressionString = (UTh_Th == null) ? UNCOR208PB232TH_CALIB_CONST_DEFAULT_EXPRESSION : UTh_Th.getExcelExpressionString();
 
-            outputArr.add(squidTask.printTaskAudit());
+            Expression thU = task.getExpressionByName(TH_U_EXP_RM);
+            String thU_ExpressionString = (thU == null) ? TH_U_EXP_DEFAULT_EXPRESSION : thU.getExcelExpressionString();
+
+            Expression parentPPM = task.getExpressionByName(PARENT_ELEMENT_CONC_CONST);
+            String parentPPM_ExpressionString = (parentPPM == null) ? PARENT_ELEMENT_CONC_CONST_DEFAULT_EXPRESSION : parentPPM.getExcelExpressionString();
+
+            outputArr.add((perm1 || perm2 || perm4) ? UTh_U_ExpressionString : "Not Used");
+            outputArr.add((perm2 || perm3 || perm4) ? UTh_Th_ExpressionString : "Not Used");
+            outputArr.add((perm1 || perm3) ? thU_ExpressionString : "Not Used");
+            outputArr.add(parentPPM_ExpressionString);
+
+            outputArr.add(Boolean.toString(makeExpression(UNCOR206PB238U_CALIB_CONST, UTh_U_ExpressionString).amHealthy()));
+            outputArr.add(Boolean.toString(makeExpression(UNCOR208PB232TH_CALIB_CONST, UTh_Th_ExpressionString).amHealthy()));
+            outputArr.add(Boolean.toString(makeExpression(TH_U_EXP_DEFAULT, thU_ExpressionString).amHealthy()));
+            outputArr.add(Boolean.toString(makeExpression(PARENT_ELEMENT_CONC_CONST, parentPPM_ExpressionString).amHealthy()));
+            System.out.println(makeExpression(UNCOR206PB238U_CALIB_CONST, UTh_U_ExpressionString).amHealthy());
+            System.out.println(makeExpression(UNCOR208PB232TH_CALIB_CONST, UTh_Th_ExpressionString).amHealthy());
+            System.out.println(makeExpression(TH_U_EXP_DEFAULT, thU_ExpressionString).amHealthy());
+            System.out.println(makeExpression(PARENT_ELEMENT_CONC_CONST, parentPPM_ExpressionString).amHealthy());
+            outputArr.add(task.printTaskAudit());
             Gson packager = new Gson();
             response.getWriter().println(packager.toJson(Arrays.toString(outputArr.toArray())));
         } catch (Exception e) {
@@ -91,6 +110,10 @@ public class CurrentTaskStringsServlet extends HttpServlet {
             e.printStackTrace();
             System.out.print(e);
         }
+    }
+
+    private Expression makeExpression(String expressionName, final String expressionString) {
+        return makeExpressionForAudit(expressionName, expressionString, task.getNamedExpressionsMap());
     }
 
     /**
