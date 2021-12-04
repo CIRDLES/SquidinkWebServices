@@ -167,6 +167,12 @@
     <servlet-name>CurrentTaskSetStringsServlet</servlet-name>
     <servlet-class>com.cirdles.CurrentTaskSetStringsServlet</servlet-class>
   </servlet>
+  <servlet>
+    <description></description>
+    <display-name>CurrentTaskAudit</display-name>
+    <servlet-name>CurrentTaskAudit</servlet-name>
+    <servlet-class>com.cirdles.CurrentTaskAudit</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>ClickServlet</servlet-name>
     <url-pattern>/clickServlet/*</url-pattern>
@@ -254,5 +260,9 @@
   <servlet-mapping>
     <servlet-name>CurrentTaskSetStringsServlet</servlet-name>
     <url-pattern>/settaskstrings</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>CurrentTaskAudit</servlet-name>
+    <url-pattern>/curtaskaudit</url-pattern>
   </servlet-mapping>
 </web-app>

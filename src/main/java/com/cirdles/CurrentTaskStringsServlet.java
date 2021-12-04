@@ -2,10 +2,9 @@ package com.cirdles;
 
 import com.google.gson.Gson;
 import org.cirdles.squid.Squid3API;
-import org.cirdles.squid.constants.Squid3Constants;
-import org.cirdles.squid.Squid3Ink;
+
 import org.cirdles.squid.exceptions.SquidException;
-import org.cirdles.squid.projects.Squid3ProjectBasicAPI;
+
 import org.cirdles.squid.tasks.TaskInterface;
 import org.cirdles.squid.tasks.expressions.Expression;
 
@@ -15,9 +14,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
+
 import java.io.IOException;
-import java.lang.reflect.Array;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -102,7 +101,6 @@ public class CurrentTaskStringsServlet extends HttpServlet {
             System.out.println(makeExpression(UNCOR208PB232TH_CALIB_CONST, UTh_Th_ExpressionString).amHealthy());
             System.out.println(makeExpression(TH_U_EXP_DEFAULT, thU_ExpressionString).amHealthy());
             System.out.println(makeExpression(PARENT_ELEMENT_CONC_CONST, parentPPM_ExpressionString).amHealthy());
-            outputArr.add(task.printTaskAudit());
             Gson packager = new Gson();
             response.getWriter().println(packager.toJson(Arrays.toString(outputArr.toArray())));
         } catch (Exception e) {
