@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.stream.Collectors;
+import com.cirdles.Constants;
 
 
 public class APIServlet extends HttpServlet {
@@ -60,7 +61,7 @@ public class APIServlet extends HttpServlet {
         try {
             String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
             if (this.getServletConfig().getServletContext().getAttribute(body) == null) {
-                String path = System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body;
+                String path = Constants.TOMCAT_ROUTE + File.separator + "filebrowser" + File.separator + "users" + File.separator + body;
                 this.getServletConfig().getServletContext().setAttribute(body, Squid3Ink.spillSquid3Ink(path));
             }
         } catch (SquidException e) {

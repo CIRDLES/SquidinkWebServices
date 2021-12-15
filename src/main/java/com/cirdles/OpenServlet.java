@@ -43,7 +43,7 @@ public class OpenServlet extends HttpServlet {
         try {
             response.getWriter().println(System.getenv("CATALINA_HOME"));
             String[] body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split(":");
-            String pathToDir = System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body[0];
+            String pathToDir = Constants.TOMCAT_ROUTE + File.separator + "filebrowser" + File.separator + "users" + File.separator + body[0];
             response.getWriter().println(pathToDir);
 
             this.getServletConfig().getServletContext().setAttribute(body[0], Squid3Ink.spillSquid3Ink(pathToDir));

@@ -62,7 +62,7 @@ public class SaveServlet extends HttpServlet {
             throws ServletException, IOException {
         String[] body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split(":");
         String curPath =
-                System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body[0];
+                Constants.TOMCAT_ROUTE + File.separator + "filebrowser" + File.separator + "users" + File.separator + body[0];
         Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
         try {
             squid.saveCurrentSquid3Project();
