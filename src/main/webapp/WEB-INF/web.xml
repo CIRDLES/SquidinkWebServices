@@ -173,6 +173,18 @@
     <servlet-name>CurrentTaskAudit</servlet-name>
     <servlet-class>com.cirdles.CurrentTaskAudit</servlet-class>
   </servlet>
+  <servlet>
+    <description></description>
+    <display-name>TaskLibraryServlet</display-name>
+    <servlet-name>TaskLibraryServlet</servlet-name>
+    <servlet-class>com.cirdles.TaskLibraryServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>TaskLibraryDataServlet</display-name>
+    <servlet-name>TaskLibraryDataServlet</servlet-name>
+    <servlet-class>com.cirdles.TaskLibraryDataServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>ClickServlet</servlet-name>
     <url-pattern>/clickServlet/*</url-pattern>
@@ -264,5 +276,13 @@
   <servlet-mapping>
     <servlet-name>CurrentTaskAudit</servlet-name>
     <url-pattern>/curtaskaudit</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>TaskLibraryServlet</servlet-name>
+    <url-pattern>/tasklibrary</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>TaskLibraryDataServlet</servlet-name>
+    <url-pattern>/tasklibrarydata</url-pattern>
   </servlet-mapping>
 </web-app>
