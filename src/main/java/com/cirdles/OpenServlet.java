@@ -41,6 +41,7 @@ public class OpenServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            response.getWriter().println(System.getenv("CATALINA_HOME"));
             String[] body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split(":");
             String pathToDir = System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body[0];
             response.getWriter().println(pathToDir);

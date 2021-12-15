@@ -77,7 +77,7 @@ public class ClickServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
 
-
+            response.getWriter().println(System.getenv("CATALINA_HOME"));
             String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
             String pathToDir = System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body;
             this.getServletConfig().getServletContext().setAttribute(body, Squid3Ink.spillSquid3Ink(pathToDir));
