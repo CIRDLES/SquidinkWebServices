@@ -101,8 +101,10 @@ public class TaskLibraryServlet extends HttpServlet {
             for(TaskInterface listItem : taskList) {
                 outputList.add(listItem.getName());
             }
+            String[] newOutput = outputList.toArray(new String[0]);
+            Arrays.sort(newOutput, new IntuitiveStringComparator<String>());
             Gson gson = new Gson();
-            response.getWriter().println(gson.toJson(Arrays.toString(outputList.toArray())));
+            response.getWriter().println(gson.toJson(Arrays.toString(newOutput)));
         } catch (Exception e) {
             e.printStackTrace();
             response.getWriter().print(e);
