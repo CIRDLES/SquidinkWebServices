@@ -56,7 +56,7 @@ public class SaveAsPreflight extends HttpServlet {
             throws ServletException, IOException {
         String[] body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split(":");
         String curPath =
-                System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body[0] + File.separator + body[1];
+                Constants.TOMCAT_ROUTE + File.separator + "filebrowser" + File.separator + "users" + File.separator + body[0] + File.separator + body[1];
         try {
             File newSquidFile = new File(curPath);
             if (newSquidFile.exists()) {

@@ -1,7 +1,13 @@
 package com.cirdles;
 
+import com.google.gson.Gson;
 import org.cirdles.squid.Squid3API;
+import org.cirdles.squid.constants.Squid3Constants;
 import org.cirdles.squid.Squid3Ink;
+import org.cirdles.squid.exceptions.SquidException;
+import org.cirdles.squid.projects.Squid3ProjectBasicAPI;
+import org.cirdles.squid.tasks.TaskInterface;
+import org.cirdles.squid.tasks.expressions.Expression;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -11,14 +17,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
+import static org.cirdles.squid.tasks.expressions.Expression.makeExpressionForAudit;
+import static org.cirdles.squid.tasks.expressions.builtinExpressions.BuiltInExpressionsDataDictionary.*;
 
 /**
  * Servlet implementation class FileUploadServlet
  */
 
-@WebServlet(name = "ClickServlet", urlPatterns = {"/OpenServlet/*"})
+@WebServlet(name = "CurrentTaskSetStringsServlet", urlPatterns = {"/CurrentTaskStringsServlet"})
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 1, // MB
         maxFileSize = 1024 * 1024 * 10, // 10 MB
@@ -26,7 +36,7 @@ import java.util.stream.Collectors;
 )
 
 
-public class OpenServlet extends HttpServlet {
+public class CurrentTaskSetStringsServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -41,29 +51,22 @@ public class OpenServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            response.getWriter().println(System.getenv("CATALINA_HOME"));
-            String[] body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split(":");
-            String pathToDir = Constants.TOMCAT_ROUTE + File.separator + "filebrowser" + File.separator + "users" + File.separator + body[0];
-            response.getWriter().println(pathToDir);
-
-            this.getServletConfig().getServletContext().setAttribute(body[0], Squid3Ink.spillSquid3Ink(pathToDir));
+            String[] body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split("!@#");
             Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
-
-            //tomcat/filebrowser/users/userfolder/selectedfile
-            File path = new File(pathToDir + File.separator + body[1] + File.separator);
-            String[] isZip = path.toString().split("\\.");
-            System.out.println(path.toString());
-            if (isZip[isZip.length - 1].equals("zip")) {
-                squid.newSquid3GeochronProjectFromZippedPrawnXML(path.toPath());
-            } else if (isZip[isZip.length - 1].equals("squid")) {
-                squid.openSquid3Project(path.toPath());
-            } else if (isZip[isZip.length - 1].equals("xml")) {
-                squid.newSquid3GeochronProjectFromPrawnXML(path.toPath());
+            TaskInterface squidTask = squid.getSquid3Project().getTask();
+            squidTask.setName(body[1]);
+            squidTask.setDescription(body[2]);
+            squidTask.setAuthorName(body[3]);
+            squidTask.setLabName(body[4]);
+            squidTask.setProvenance(body[5]);
+            squidTask.setParentNuclide(body[6]);
+            squidTask.setDirectAltPD(body[7].equals("direct") ? true : false);
+            try {
+                squidTask.applyDirectives();
+            } catch (SquidException squidException) {
+                System.out.println(squidException);
             }
-              else {
-                squid.newSquid3GeochronProjectFromDataFileOP(path.toPath());
-            }
-            this.getServletConfig().getServletContext().setAttribute("squid3API", squid);
+            response.getWriter().println("Set");
         } catch (Exception e) {
             response.getWriter().print(e);
             e.printStackTrace();

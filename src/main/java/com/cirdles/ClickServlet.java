@@ -77,16 +77,15 @@ public class ClickServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
 
-
             String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-            String pathToDir = System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users" + File.separator + body;
+            String pathToDir = Constants.TOMCAT_ROUTE + File.separator + "filebrowser" + File.separator + "users" + File.separator + body;
             this.getServletConfig().getServletContext().setAttribute(body, Squid3Ink.spillSquid3Ink(pathToDir));
             Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body);
             File localDemoFile = new File(DEMO_SQUID_PROJECTS_FOLDER.getAbsolutePath()
                     + File.separator + "SQUID3_demo_file.squid");
             Path basepath = localDemoFile.toPath();
             Path target = new File(
-                    System.getenv("CATALINA_HOME") + File.separator + "filebrowser" + File.separator + "users"
+                    Constants.TOMCAT_ROUTE + File.separator + "filebrowser" + File.separator + "users"
                             + File.separator + body + File.separator + "SQUID3_demo_file.squid").toPath();
             response.getWriter().println(basepath.toString());
             response.getWriter().println(target.toString());
