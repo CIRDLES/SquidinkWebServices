@@ -119,17 +119,13 @@ public class TaskLibraryDataServlet extends HttpServlet {
                     outputArr.add(Arrays.toString(task.getNominalMasses().toArray()));
                     outputArr.add(Arrays.toString(task.getRatioNames().toArray()));
 
-                    Expression UTh_U = task.getExpressionByName(UNCOR206PB238U_CALIB_CONST);
-                    String UTh_U_ExpressionString = (UTh_U == null) ? UNCOR206PB238U_CALIB_CONST_DEFAULT_EXPRESSION : UTh_U.getExcelExpressionString();
+                    String UTh_U_ExpressionString = task.getSpecialSquidFourExpressionsMap().get(UNCOR206PB238U_CALIB_CONST);
 
-                    Expression UTh_Th = task.getExpressionByName(UNCOR208PB232TH_CALIB_CONST);
-                    String UTh_Th_ExpressionString = (UTh_Th == null) ? UNCOR208PB232TH_CALIB_CONST_DEFAULT_EXPRESSION : UTh_Th.getExcelExpressionString();
+                    String UTh_Th_ExpressionString = task.getSpecialSquidFourExpressionsMap().get(UNCOR208PB232TH_CALIB_CONST);
 
-                    Expression thU = task.getExpressionByName(TH_U_EXP_RM);
-                    String thU_ExpressionString = (thU == null) ? TH_U_EXP_DEFAULT_EXPRESSION : thU.getExcelExpressionString();
+                    String thU_ExpressionString = task.getSpecialSquidFourExpressionsMap().get(TH_U_EXP_DEFAULT);
 
-                    Expression parentPPM = task.getExpressionByName(PARENT_ELEMENT_CONC_CONST);
-                    String parentPPM_ExpressionString = (parentPPM == null) ? PARENT_ELEMENT_CONC_CONST_DEFAULT_EXPRESSION : parentPPM.getExcelExpressionString();
+                    String parentPPM_ExpressionString = task.getSpecialSquidFourExpressionsMap().get(PARENT_ELEMENT_CONC_CONST);
 
                     outputArr.add((perm1 || perm2 || perm4) ? UTh_U_ExpressionString : "Not Used");
                     outputArr.add((perm2 || perm3 || perm4) ? UTh_Th_ExpressionString : "Not Used");
