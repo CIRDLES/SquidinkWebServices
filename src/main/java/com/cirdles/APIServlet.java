@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.PosixFileAttributes;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.Set;
@@ -68,10 +69,7 @@ public class APIServlet extends HttpServlet {
             String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
             if (this.getServletConfig().getServletContext().getAttribute(body) == null) {
                 String path = Constants.TOMCAT_ROUTE + File.separator + "filebrowser" + File.separator + "users" + File.separator + body;
-                Set<PosixFilePermission> permissionSet = Files.readAttributes(Paths.get(path), PosixFileAttributes.class).permissions();
-                permissionSet.add(PosixFilePermission.GROUP_WRITE);
-                permissionSet.add(PosixFilePermission.GROUP_EXECUTE);
-                Files.setPosixFilePermissions(Paths.get(path), permissionSet);
+                Files.copy(Paths.get(path), Paths.get(path), StandardCopyOption.REPLACE_EXISTING);
                 this.getServletConfig().getServletContext().setAttribute(body, Squid3Ink.spillSquid3Ink(path));
             }
         } catch (SquidException e) {
