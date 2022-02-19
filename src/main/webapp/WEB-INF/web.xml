@@ -185,6 +185,12 @@
     <servlet-name>TaskLibraryDataServlet</servlet-name>
     <servlet-class>com.cirdles.TaskLibraryDataServlet</servlet-class>
   </servlet>
+  <servlet>
+    <description></description>
+    <display-name>CustomExpressionServlet</display-name>
+    <servlet-name>CustomExpressionServlet</servlet-name>
+    <servlet-class>com.cirdles.CustomExpressionServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>ClickServlet</servlet-name>
     <url-pattern>/clickServlet/*</url-pattern>
@@ -284,5 +290,9 @@
   <servlet-mapping>
     <servlet-name>TaskLibraryDataServlet</servlet-name>
     <url-pattern>/tasklibrarydata</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>CustomExpressionServlet</servlet-name>
+    <url-pattern>/customexp</url-pattern>
   </servlet-mapping>
 </web-app>
