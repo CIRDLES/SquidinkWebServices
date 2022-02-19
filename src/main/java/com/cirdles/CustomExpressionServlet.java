@@ -43,7 +43,7 @@ import static org.cirdles.squid.utilities.fileUtilities.FileValidator.validateXM
  * Servlet implementation class FileUploadServlet
  */
 
-@WebServlet(name = "TaskLibraryDataServlet", urlPatterns = {"/tasklibrary"})
+@WebServlet(name = "CustomExpressionServlet", urlPatterns = {"/customexp"})
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 1, // MB
         maxFileSize = 1024 * 1024 * 10, // 10 MB
@@ -51,7 +51,7 @@ import static org.cirdles.squid.utilities.fileUtilities.FileValidator.validateXM
 )
 
 
-public class TaskLibraryDataServlet extends HttpServlet {
+public class CustomExpressionServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -100,46 +100,15 @@ public class TaskLibraryDataServlet extends HttpServlet {
             String body[] = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split(":");
             Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
             Squid3ProjectBasicAPI infoPull = squid.getSquid3Project();
-            System.out.println(body);
             File taskFile = body[2].equals("default") ? SQUID_TASK_LIBRARY_FOLDER
                     : new File(Constants.TOMCAT_ROUTE + File.separator + "filebrowser" + File.separator + "users" + File.separator + body[0] + File.separator + body[2]);
-            System.out.println(Constants.TOMCAT_ROUTE + File.separator + "filebrowser" + File.separator + "users" + File.separator + body[0] + File.separator + body[2]);
             ArrayList<TaskInterface> taskList = TaskLibraryServlet.populateListOfTasks(infoPull, taskFile);
             for(TaskInterface task : taskList) {
                 if(task.getName().toLowerCase().trim().equals(body[1].toLowerCase().trim())) {
-                    boolean uPicked = task.getParentNuclide().equals("238");
-                    boolean directPicked = task.isDirectAltPD();;
-                    boolean perm1 = uPicked && !directPicked;
-                    boolean perm2 = uPicked && directPicked;
-                    boolean perm3 = !uPicked && !directPicked;
-                    boolean perm4 = !uPicked && directPicked;
-
-                    outputArr.add(task.getName());
-                    outputArr.add(task.getDescription());
-                    outputArr.add(task.getAuthorName());
-                    outputArr.add(task.getLabName());
-                    outputArr.add(task.getProvenance());
-                    outputArr.add(task.getParentNuclide());
-                    outputArr.add(task.isDirectAltPD() ? "direct":"indirect");
-                    outputArr.add(Arrays.toString(task.getNominalMasses().toArray()));
-                    outputArr.add(Arrays.toString(task.getRatioNames().toArray()));
-
-                    String UTh_U_ExpressionString = task.getSpecialSquidFourExpressionsMap().get(UNCOR206PB238U_CALIB_CONST);
-
-                    String UTh_Th_ExpressionString = task.getSpecialSquidFourExpressionsMap().get(UNCOR208PB232TH_CALIB_CONST);
-
-                    String thU_ExpressionString = task.getSpecialSquidFourExpressionsMap().get(TH_U_EXP_DEFAULT);
-
-                    String parentPPM_ExpressionString = task.getSpecialSquidFourExpressionsMap().get(PARENT_ELEMENT_CONC_CONST);
-
-                    outputArr.add((perm1 || perm2 || perm4) ? UTh_U_ExpressionString : "Not Used");
-                    outputArr.add((perm2 || perm3 || perm4) ? UTh_Th_ExpressionString : "Not Used");
-                    outputArr.add((perm1 || perm3) ? thU_ExpressionString : "Not Used");
-                    outputArr.add(parentPPM_ExpressionString);
+                    Gson gson = new Gson();
+                    response.getWriter().println(gson.toJson(task.getCustomTaskExpressions().toString()));
                 }
             }
-            Gson gson = new Gson();
-            response.getWriter().println(gson.toJson(Arrays.toString(outputArr.toArray())));
         } catch (Exception e) {
             e.printStackTrace();
             response.getWriter().print(e);
