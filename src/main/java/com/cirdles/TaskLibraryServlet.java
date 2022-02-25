@@ -93,11 +93,13 @@ public class TaskLibraryServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             ArrayList<String> outputList = new ArrayList<>();
-            String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-            Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body);
+            String[] body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split(":");
+            Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
 
             Squid3ProjectBasicAPI infoPull = squid.getSquid3Project();
-            ArrayList<TaskInterface> taskList = populateListOfTasks(infoPull);
+            File taskFile = body[1].equals("default") ? SQUID_TASK_LIBRARY_FOLDER
+                    : new File(Constants.TOMCAT_ROUTE + File.separator + "filebrowser" + File.separator + "users" + File.separator + body[0] + File.separator + body[1]);
+            ArrayList<TaskInterface> taskList = populateListOfTasks(infoPull, taskFile);
             for(TaskInterface listItem : taskList) {
                 outputList.add(listItem.getName());
             }
@@ -122,7 +124,7 @@ public class TaskLibraryServlet extends HttpServlet {
         return "Click Event Servlet";
     }// </editor-fold>
 
-    public static ArrayList<TaskInterface> populateListOfTasks(Squid3ProjectBasicAPI squidProject) {
+    public static ArrayList<TaskInterface> populateListOfTasks(Squid3ProjectBasicAPI squidProject, File route) {
         SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         Schema taskXMLSchema = null;
         try {
@@ -132,7 +134,7 @@ public class TaskLibraryServlet extends HttpServlet {
         }
 
         ArrayList<TaskInterface> taskFilesInFolder = new ArrayList<>();
-        File tasksBrowserTarget = SQUID_TASK_LIBRARY_FOLDER;
+        File tasksBrowserTarget = route;
         String tasksBrowserType = ".xml";
         if (tasksBrowserTarget != null) {
             if (tasksBrowserType.compareToIgnoreCase(".xml") == 0) {
