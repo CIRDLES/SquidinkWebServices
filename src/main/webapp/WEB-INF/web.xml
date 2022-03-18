@@ -191,6 +191,12 @@
     <servlet-name>CustomExpressionServlet</servlet-name>
     <servlet-class>com.cirdles.CustomExpressionServlet</servlet-class>
   </servlet>
+  <servlet>
+    <description></description>
+    <display-name>SaveXMLServlet</display-name>
+    <servlet-name>SaveXMLServlet</servlet-name>
+    <servlet-class>com.cirdles.SaveXMLServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>ClickServlet</servlet-name>
     <url-pattern>/clickServlet/*</url-pattern>
@@ -294,5 +300,9 @@
   <servlet-mapping>
     <servlet-name>CustomExpressionServlet</servlet-name>
     <url-pattern>/customexp</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SaveXMLServlet</servlet-name>
+    <url-pattern>/savexml</url-pattern>
   </servlet-mapping>
 </web-app>

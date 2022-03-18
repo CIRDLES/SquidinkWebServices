@@ -100,13 +100,9 @@ public class CustomExpressionServlet extends HttpServlet {
             String body[] = request.getReader().lines().collect(Collectors.joining(System.lineSeparator())).split(":");
             Squid3API squid = (Squid3API) this.getServletConfig().getServletContext().getAttribute(body[0]);
             Squid3ProjectBasicAPI infoPull = squid.getSquid3Project();
-<<<<<<< HEAD
             File taskFile = body[2].equals("default") ? SQUID_TASK_LIBRARY_FOLDER
                     : new File(Constants.TOMCAT_ROUTE + File.separator + "filebrowser" + File.separator + "users" + File.separator + body[0] + File.separator + body[2]);
             ArrayList<TaskInterface> taskList = TaskLibraryServlet.populateListOfTasks(infoPull, taskFile);
-=======
-            ArrayList<TaskInterface> taskList = TaskLibraryServlet.populateListOfTasks(infoPull);
->>>>>>> master
             for(TaskInterface task : taskList) {
                 if(task.getName().toLowerCase().trim().equals(body[1].toLowerCase().trim())) {
                     Gson gson = new Gson();

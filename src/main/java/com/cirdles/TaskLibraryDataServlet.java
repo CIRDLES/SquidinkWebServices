@@ -107,6 +107,7 @@ public class TaskLibraryDataServlet extends HttpServlet {
             ArrayList<TaskInterface> taskList = TaskLibraryServlet.populateListOfTasks(infoPull, taskFile);
             for(TaskInterface task : taskList) {
                 if(task.getName().toLowerCase().trim().equals(body[1].toLowerCase().trim())) {
+                    this.getServletConfig().getServletContext().setAttribute(body[0] + "task", task);
                     boolean uPicked = task.getParentNuclide().equals("238");
                     boolean directPicked = task.isDirectAltPD();;
                     boolean perm1 = uPicked && !directPicked;
