@@ -21,18 +21,18 @@
 		<url>https://cirdles.org</url>
 	</organization>
 
+
   <dependencies>
+	  <dependency>
+		  <groupId>org.json</groupId>
+		  <artifactId>json</artifactId>
+		  <version>20180130</version>
+	  </dependency>
   	<dependency>
   		<groupId>javax.servlet</groupId>
   		<artifactId>javax.servlet-api</artifactId>
   		<version>4.0.1</version>
   	</dependency>
-	  <dependency>
-		  <groupId>org.apache.tomcat</groupId>
-		  <artifactId>tomcat-catalina</artifactId>
-		  <version>7.0.42</version>
-		  <scope>provided</scope>
-	  </dependency>
 	  <dependency>
 		  <groupId>org.zeroturnaround</groupId>
 		  <artifactId>zt-zip</artifactId>
