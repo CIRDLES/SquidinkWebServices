@@ -197,6 +197,12 @@
     <servlet-name>SaveXMLServlet</servlet-name>
     <servlet-class>com.cirdles.SaveXMLServlet</servlet-class>
   </servlet>
+  <servlet>
+    <description></description>
+    <display-name>IsotopesServlet</display-name>
+    <servlet-name>IsotopesServlet</servlet-name>
+    <servlet-class>com.cirdles.IsotopesServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>ClickServlet</servlet-name>
     <url-pattern>/clickServlet/*</url-pattern>
@@ -304,5 +310,9 @@
   <servlet-mapping>
     <servlet-name>SaveXMLServlet</servlet-name>
     <url-pattern>/savexml</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>IsotopesServlet</servlet-name>
+    <url-pattern>/isotopes</url-pattern>
   </servlet-mapping>
 </web-app>
